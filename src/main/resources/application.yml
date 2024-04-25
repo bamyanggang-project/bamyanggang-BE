@@ -2,13 +2,13 @@ spring:
 
 #db-mysql
  datasource:
-      url: jdbc:mysql://localhost:3306/
+      url: jdbc:mysql://localhost:3306/bamyanggang
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: 
-      password: 
+      username: test
+      password: 1234
 
 mybatis:
-   type-aliases-package: jjon.gangsan.model
+   type-aliases-package: jjon.bamyanggang.model
    mapper-locations: classpath:/mapper/*.xml
    config-location: classpath:Mybatis-Config.xml
 
