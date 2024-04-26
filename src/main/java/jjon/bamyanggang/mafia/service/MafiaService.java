@@ -35,14 +35,14 @@ public class MafiaService implements MafiaMapper{
 			// [방 생성] mafia_room insert
 			mafiaMapper.createRoom(setRoom);
 			System.out.println("[방 생성] mafia_room insert 성공!");
-			// mafia_role room_no get
-			int getRoomNo = mafiaMapper.getRoomNo(setRoom.getRoomCd());
+			// [방 생성] 방 번호 조회
+			int getRoomNo = getRoomNo(setRoom.getRoomCd());
 			// room_no 확인
 			System.out.println("mafia_role 방 번호 값 : " + getRoomNo);
 			// mafia_role room_no set
 			setRoom.setRoomNo(getRoomNo);
 			// [방 생성] mafia_role insert
-			mafiaMapper.initRoom(setRoom);
+			initRoom(setRoom);
 			System.out.println("[방 생성] mafia_role insert 성공!");
 		} catch (Exception e) {
 			System.out.println("DB로 전달 실패ㅠ");
@@ -54,6 +54,7 @@ public class MafiaService implements MafiaMapper{
 	@Override
 	public List<MafiaRoom> getRoomList() {
 		System.out.println("[방 목록] Service 시작!");
+		// [방 목록]
 		List<MafiaRoom> getRoomList = mafiaMapper.getRoomList();
 		return getRoomList;
 	}
@@ -63,13 +64,13 @@ public class MafiaService implements MafiaMapper{
 	public int joinRoom(SetRoom setRoom) {
 		System.out.println("[방 입장] Service 시작!");
 		// [방 입장] + join_cnt
-		mafiaMapper.joinCntPlus(setRoom);
+		joinCntPlus(setRoom);
 		System.out.println("[방 입장] ++ join_cnt 성공!");
 		// [방 입장] mafia_role insert
-		mafiaMapper.insertUser(setRoom);
+		insertUser(setRoom);
 		System.out.println("[방 입장] mafia_role insert 성공!");
 		// [방 입장] 방 번호 조회
-		int getJoinNo = mafiaMapper.getJoinNo(setRoom);
+		int getJoinNo = getJoinNo(setRoom);
 		System.out.println("[방 입장] 방 번호 조회 성공!");
 		
 		return getJoinNo;
@@ -81,10 +82,10 @@ public class MafiaService implements MafiaMapper{
 		System.out.println("[방 대기] Service 시작!");
 		Map<String, Object> standBy = new HashMap<String, Object>();
 		// [방 대기] 방 정보 조회
-		Map<String, Object> getRoomInfo = mafiaMapper.getRoomInfo(mafiaRoom);
+		MafiaRoom getRoomInfo = getRoomInfo(mafiaRoom);
 		System.out.println("[방 대기] 방 정보 조회 성공!");
 		// [방 대기] 참여 사용자 정보 조회
-		List<RoomUserInfo> roomUserInfo = mafiaMapper.getUserInfo(mafiaRoom);
+		List<RoomUserInfo> roomUserInfo = getUserInfo(mafiaRoom);
 		System.out.println("[방 대기] 참여 사용자 정보 조회 성공!");
 		standBy.put("방 정보", getRoomInfo);
 		standBy.put("사용자 정보", roomUserInfo);
@@ -97,41 +98,43 @@ public class MafiaService implements MafiaMapper{
 	@Transactional
 	public List<MafiaRoom> exitRoom(SetRoom setRoom) {
 		System.out.println("[방 퇴장] Service 시작!");
-		List<MafiaRoom> getRoomList = mafiaMapper.getRoomList();
-		// master 컬럼에는 
-		int getMaster = mafiaMapper.getMaster(setRoom);
+		// [방 목록]
+		List<MafiaRoom> getRoomList = getRoomList();
+		// [방 퇴장] master 조회 
+		int getMaster = getMaster(setRoom);
 		System.out.println("[방 퇴장] master 조회 : " + getMaster);
-		int getJoinCnt = mafiaMapper.getJoinCnt(setRoom);
+		// [방 퇴장] join_cnt 조회
+		int getJoinCnt = getJoinCnt(setRoom);
 		System.out.println("[방 퇴장] join_cnt 조회 : " + getJoinCnt);
 		// 방장이라면
 		if (getMaster == 1) {
 			// 참여 인원이 2명 이상이라면
 			if (getJoinCnt >= 2) {
 				// [방 퇴장] mafia_role delete
-				mafiaMapper.userDel(setRoom);
+				userDel(setRoom);
 				// [방 퇴장] - join_cnt
-				mafiaMapper.joinCntMinus(setRoom);
+				joinCntMinus(setRoom);
 				// [방 퇴장] master update
-				mafiaMapper.masterUpdate(setRoom);
-				getRoomList = mafiaMapper.getRoomList();
+				masterUpdate(setRoom);
+				getRoomList = getRoomList();
 				
 				return getRoomList;
 			} else if (getJoinCnt <= 1) { // 참여 인원이 1명 이하라면
 				// [방 퇴장] mafia_role delete
-				mafiaMapper.userDel(setRoom);
+				userDel(setRoom);
 				// [방 퇴장] mafia_room delete
-				mafiaMapper.roomDel(setRoom);
-				getRoomList = mafiaMapper.getRoomList();
+				roomDel(setRoom);
+				getRoomList = getRoomList();
 				
 				return getRoomList;			}
 		} else { // 방장이 아니라면
 			// 참여 인원이 2명 이상이라면 
 			if (getJoinCnt >= 2) {
 				// [방 퇴장] mafia_role delete
-				mafiaMapper.userDel(setRoom);
+				userDel(setRoom);
 				// [방 퇴장] - join_cnt
-				mafiaMapper.joinCntMinus(setRoom);
-				getRoomList = mafiaMapper.getRoomList();
+				joinCntMinus(setRoom);
+				getRoomList = getRoomList();
 				
 				return getRoomList;
 			}
@@ -173,7 +176,7 @@ public class MafiaService implements MafiaMapper{
 	// [방 생성] 중복 코드 확인
 	public boolean isCodeExists(String randomCode) {
 		// 매개변수로 받은 코드를 통해 중복 코드가 있는 방을 조회
-		int cntCodeExists = mafiaMapper.cntCodeExists(randomCode);
+		int cntCodeExists = cntCodeExists(randomCode);
 		// 조회 값이 0 이상이라면(중복 코드가 있는 방이 있다면) true 값을 전달해 중복 코드 방이 생성되지 않도록 계속 랜덤 코드 생성
 		if (cntCodeExists > 0) {
 			return true;
@@ -220,7 +223,7 @@ public class MafiaService implements MafiaMapper{
 	
 	// [방 대기] 방 정보 조회
 	@Override
-	public Map<String, Object> getRoomInfo(MafiaRoom mafiaRoom) {
+	public MafiaRoom getRoomInfo(MafiaRoom mafiaRoom) {
 		return mafiaMapper.getRoomInfo(mafiaRoom);
 	}
 	
@@ -242,29 +245,29 @@ public class MafiaService implements MafiaMapper{
 		return mafiaMapper.getJoinCnt(setRoom);
 	}
 
-	// [방 퇴장] mafia_room delete
-	@Override
-	public void roomDel(SetRoom setRoom) {
-		mafiaMapper.roomDel(setRoom);
-	}
-	
 	// [방 퇴장] mafia_role delete
 	@Override
 	public void userDel(SetRoom setRoom) {
 		mafiaMapper.userDel(setRoom);
 	}
-
-	// [방 퇴장] master update
-	@Override
-	public void masterUpdate(SetRoom setRoom) {
-		mafiaMapper.masterUpdate(setRoom);
-	}
 	
+
 	// [방 퇴장] - join_cnt
 	@Override
 	public void joinCntMinus(SetRoom setRoom) {
 		mafiaMapper.joinCntMinus(setRoom);
 	}
 	
+	// [방 퇴장] master update
+	@Override
+	public void masterUpdate(SetRoom setRoom) {
+		mafiaMapper.masterUpdate(setRoom);
+	}
+	
+	// [방 퇴장] mafia_room delete
+	@Override
+	public void roomDel(SetRoom setRoom) {
+		mafiaMapper.roomDel(setRoom);
+	}
 	
 }
