@@ -48,7 +48,7 @@
 	</select>
 	
 	<!-- [방 대기]  방 정보 조회-->
-	<select id = "getRoomInfo" parameterType = "mafia_room" resultType = "Map">
+	<select id = "getRoomInfo" parameterType = "mafia_room" resultType = "mafia_room">
 		select room_nm, room_cd, join_cnt from mafia_room where room_no = #{roomNo}
 	</select>
 	
@@ -79,15 +79,14 @@
 		update mafia_room set join_cnt = join_cnt-1 where room_no = #{roomNo}
 	</update>
 	
-	<!-- [방 퇴장] mafia_room delete -->
-	<delete id = "roomDel" parameterType = "set_room">
-		delete from mafia_room where room_no = #{roomNo}
-	</delete>
-	
 	<!-- [방 퇴장] master update -->
 	<update id = "masterUpdate" parameterType = "set_room">
 		update mafia_role set master = 1 where room_no = #{roomNo} order by entry_time limit 1
 	</update>
 	
+	<!-- [방 퇴장] mafia_room delete -->
+	<delete id = "roomDel" parameterType = "set_room">
+		delete from mafia_room where room_no = #{roomNo}
+	</delete>
 	
 </mapper>

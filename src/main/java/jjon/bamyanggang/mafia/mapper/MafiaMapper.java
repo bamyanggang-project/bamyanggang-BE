@@ -1,7 +1,6 @@
 package jjon.bamyanggang.mafia.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,7 +11,7 @@ import jjon.bamyanggang.model.SetRoom;
 @Mapper
 public interface MafiaMapper {
 
-	// [방 생성]
+	// [방 생성] mafia_room insert
 	public void createRoom(SetRoom setRoom);
 	
 	// [방 생성] 방 번호 조회
@@ -37,7 +36,7 @@ public interface MafiaMapper {
 	public int getJoinNo(SetRoom setRoom);
 	
 	// [방 대기] 방 정보 조회
-	public Map<String, Object> getRoomInfo(MafiaRoom mafiaRoom);
+	public MafiaRoom getRoomInfo(MafiaRoom mafiaRoom);
 	
 	// [방 대기] 참여 사용자 정보 조회
 	public List<RoomUserInfo> getUserInfo(MafiaRoom mafiaRoom);
@@ -54,11 +53,10 @@ public interface MafiaMapper {
 	// [방 퇴장] - join_cnt
 	public void joinCntMinus(SetRoom setRoom);
 	
-	// [방 퇴장] mafia_room delete
-	public void roomDel(SetRoom setRoom);
-	
 	// [방 퇴장] master update
 	public void masterUpdate(SetRoom setRoom);
 	
+	// [방 퇴장] mafia_room delete
+	public void roomDel(SetRoom setRoom);
 	
 }

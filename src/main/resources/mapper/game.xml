@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace = "jjon.bamyanggang.game.mapper.GameMapper">
+	
+	
+	<!-- [게임시작] mafia_role 조회 -->
+	<select id = "getUserInfo" 	parameterType = "mafia_role" resultType = "room_user_info">
+		select mr.role, m.user_id, m.user_nicknm from mafia_role mr
+		join member m on mr.user_id = m.user_id
+		where mr.room_no = #{roomNo}
+   	</select>
+	
+	<!-- [게임시작]  역할 부여 -->
+	<update id = "setRole" parameterType = "Map" >
+		update mafia_role set role = #{role} where user_id = #{userId}
+	</update>
+	
+</mapper>

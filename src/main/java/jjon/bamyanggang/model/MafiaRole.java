@@ -1,5 +1,7 @@
 package jjon.bamyanggang.model;
 
+import java.sql.Timestamp;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
@@ -13,5 +15,6 @@ public class MafiaRole {
 	private String userId;
 	private int roleSt;
 	private int master;
+	private Timestamp entryTime;
 	
 }
