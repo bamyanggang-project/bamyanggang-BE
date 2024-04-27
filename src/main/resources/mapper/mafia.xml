@@ -4,6 +4,11 @@
   
 <mapper namespace="jjon.bamyanggang.mafia.mapper.MafiaMapper">
 
+	<!-- security id 조회 -->
+	<select id = "getSecurityId" parameterType = "String" resultType = "int">
+		select id from member where user_id = #{userId}
+	</select>
+	
 	<!-- [방 생성] -->
 	<insert id = "createRoom" parameterType = "set_room">
 		insert into mafia_room (room_nm, room_cd, room_st, room_pw)
@@ -15,10 +20,11 @@
 		select room_no from mafia_room where room_Cd = #{roomCd}
 	</select>
 	
+	
 	<!-- [방 생성] mafia_role insert -->
 	<insert id = "initRoom" parameterType = "set_room">
-		insert into mafia_role (role, room_no, user_id, master)
-		values (#{userId}, #{roomNo}, #{userId}, 1) 
+		insert into mafia_role (role, room_no, id, user_id, master)
+		values (#{userId}, #{roomNo}, #{id}, #{userId}, 1) 
 	</insert>
 	
 	<!-- [방 생성] 중복 코드 확인 -->
@@ -38,8 +44,8 @@
 	
 	<!-- [방 입장] mafia_role insert -->
 	<insert id = "insertUser" parameterType = "set_room">
-		insert mafia_role (role, room_no, user_id)
-		values (#{userId}, #{roomNo}, #{userId})
+		insert mafia_role (role, room_no, id, user_id)
+		values (#{userId}, #{roomNo}, #{id}, #{userId})
 	</insert>
 	
 	<!-- [방 입장] 방 번호 조회 -->

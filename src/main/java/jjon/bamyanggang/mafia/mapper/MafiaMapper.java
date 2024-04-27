@@ -59,4 +59,7 @@ public interface MafiaMapper {
 	// [방 퇴장] mafia_room delete
 	public void roomDel(SetRoom setRoom);
 	
+	// security id 조회
+	public int getSecurityId(String userId);
+	
 }

@@ -24,6 +24,7 @@ public class MafiaController {
 	
 	// [방 생성]
 	// SetRoom 객체에 user_id, room_nm, room_st, room_pw 값을 담아 요청 (Front-End)
+	// int형 room_no 값을 응답 (Back-End)
 	@PostMapping("createRoom")
 	public ResponseEntity<Map<String,Object>> createRoom(@RequestBody SetRoom setRoom) {
 		System.out.println("[방 생성] Controller 시작!");

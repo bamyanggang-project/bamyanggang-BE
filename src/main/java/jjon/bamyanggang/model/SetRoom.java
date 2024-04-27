@@ -8,6 +8,7 @@ import lombok.Data;
 @Alias("set_room")
 public class SetRoom {
 	
+	private int id;
 	private String userId;
 	private int roomNo;
 	private String roomNm;

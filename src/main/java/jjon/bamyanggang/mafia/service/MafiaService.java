@@ -41,6 +41,12 @@ public class MafiaService implements MafiaMapper{
 			System.out.println("mafia_role 방 번호 값 : " + getRoomNo);
 			// mafia_role room_no set
 			setRoom.setRoomNo(getRoomNo);
+			// security id 조회
+			int idNo = getSecurityId(setRoom.getUserId());
+			// id 확인
+			System.out.println(idNo);
+			// mafia_role id set
+			setRoom.setId(idNo);
 			// [방 생성] mafia_role insert
 			initRoom(setRoom);
 			System.out.println("[방 생성] mafia_role insert 성공!");
@@ -66,6 +72,12 @@ public class MafiaService implements MafiaMapper{
 		// [방 입장] + join_cnt
 		joinCntPlus(setRoom);
 		System.out.println("[방 입장] ++ join_cnt 성공!");
+		// security id 조회
+		int idNo = getSecurityId(setRoom.getUserId());
+		// id 확인
+		System.out.println(idNo);
+		// mafia_role id set
+		setRoom.setId(idNo);
 		// [방 입장] mafia_role insert
 		insertUser(setRoom);
 		System.out.println("[방 입장] mafia_role insert 성공!");
@@ -185,12 +197,19 @@ public class MafiaService implements MafiaMapper{
 		}
 	}
 	
+	// security id 조회
+	@Override
+	public int getSecurityId(String userId) {
+		return mafiaMapper.getSecurityId(userId);
+	}
+	
 	// [방 생성] 방 번호 조회
 	@Override
 	public int getRoomNo(String roomNm) {
 		return mafiaMapper.getRoomNo(roomNm);
 	}
 	
+
 	// [방 생성] mafia_role insert
 	@Override
 	public void initRoom(SetRoom setRoom) {
