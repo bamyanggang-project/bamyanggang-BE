@@ -11,6 +11,9 @@ import jjon.bamyanggang.model.SetRoom;
 @Mapper
 public interface MafiaMapper {
 
+	// security id 조회
+	public int getSecurityId(String userId);
+	
 	// [방 생성] mafia_room insert
 	public void createRoom(SetRoom setRoom);
 	
@@ -58,8 +61,5 @@ public interface MafiaMapper {
 	
 	// [방 퇴장] mafia_room delete
 	public void roomDel(SetRoom setRoom);
-	
-	// security id 조회
-	public int getSecurityId(String userId);
 	
 }
