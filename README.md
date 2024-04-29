@@ -1,5 +1,5 @@
 # 팀프로젝트 - bamyanggang
-팀프로젝트 - bamyanggang-be (화상채팅 API를 활용한 마피아게임)
+스프링푸트 + 리액트를 활용한 Rest API 화상채팅 마피아게임 구현
 
 <br>
 <p align="center">
