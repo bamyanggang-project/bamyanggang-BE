@@ -1,4 +1,4 @@
 # bamyanggang-BE
 팀프로젝트 - bamyanggang (화상채팅 API를 활용한 마피아게임)
 
-![Follow8°_black](https://github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/e6d8d5e4-4546-4fab-ad93-87656c8010b8)
+![밤양갱_black](https://github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3)
