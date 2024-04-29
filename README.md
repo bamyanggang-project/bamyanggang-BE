@@ -3,7 +3,7 @@
 
 <br>
 <p align="center">
-  ![밤양갱_black](https://github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3)
+  <img src="https://github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3">
 </p>
 
 # 1. 프로젝트 소개
