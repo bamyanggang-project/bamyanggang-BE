@@ -2,8 +2,9 @@
 팀프로젝트 - bamyanggang-be (화상채팅 API를 활용한 마피아게임)
 
 <br>
-<div align="center">![밤양갱_black](https://github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3)</div>
-
+<div align="center">
+  <img src="https://github.com/bamyanggang-project/bamyanggang-BE/blob/main/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3.png" alt="밤양갱_black">
+</div>
 
 # 1. 프로젝트 소개
 - 화상채팅을 이용한 마피아 게임 구현
