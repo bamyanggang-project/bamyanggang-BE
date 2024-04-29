@@ -3,7 +3,7 @@
 
 <br>
 <div align="center">
-  <img src="https://github.com/bamyanggang-project/bamyanggang-BE/blob/main/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3.png" width="450" height="300">
+  <img src=https:"github.com/bamyanggang-project/bamyanggang-BE/assets/151708233/742e773e-2a98-44e6-9d78-0528f8ebf3f3" width="450" height="300">
 </div>
 
 # 1. 프로젝트 소개
