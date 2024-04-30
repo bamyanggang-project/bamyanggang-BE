@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="jjon.bamyanggang.mafia.mapper.MafiaMapper">
+
+	<!-- [방 생성] mafia_room table 세팅-->
+	<insert id = "createRoom" parameterType = "set_room">
+		insert into mafia_room (room_nm, room_cd, room_st, room_pw)
+		values (#{roomNm}, #{roomCd}, #{roomSt}, #{roomPw})
+	</insert>
+	
+	<!-- [방 생성] 방 번호 조회 -->
+	<select id ="getRoomNo" parameterType = "String" resultType = "int">
+		select room_no from mafia_room 
+		where room_Cd = #{roomCd}
+	</select>
+	
+	
+	<!-- [방 생성] mafia_role table 초기세팅 -->
+	<insert id = "initRoom" parameterType = "set_room">
+		insert into mafia_role (role, room_no, user_id, master)
+		values (#{userId}, #{roomNo}, #{userId}, 1) 
+	</insert>
+	
+	<!-- [방 생성] 중복 코드 확인 -->
+	<select id = "cntCodeExists" parameterType = "String" resultType = "int">
+		select count(*) from mafia_room 
+		where room_Cd = #{roomCd}
+	</select>
+	
+	<!-- [방 목록] -->
+	<select id = "getRoomList" resultType = "mafia_room">
+		select * from mafia_room
+	</select>
+	
+	<!-- [방 입장] + join_cnt -->
+	<update id = "joinCntPlus" parameterType = "set_room" >
+		update mafia_room set join_cnt = join_cnt+1 
+		where room_no = #{roomNo} 
+	</update>
+	
+	<!-- [방 입장] mafia_role insert -->
+	<insert id = "insertUser" parameterType = "set_room">
+		insert mafia_role (role, room_no, user_id)
+		values (#{userId}, #{roomNo}, #{userId})
+	</insert>
+	
+	<!-- [방 입장] 방 번호 조회 -->
+	<select id = "getJoinNo" parameterType = "set_room" resultType = "int">
+		select room_no from mafia_room 
+		where room_no = #{roomNo}
+	</select>
+	
+	<!-- [방 대기]  방 정보 조회-->
+	<select id = "getRoomInfo" parameterType = "int" resultType = "mafia_room">
+		select room_nm, room_cd, join_cnt from mafia_room 
+		where room_no = #{roomNo}
+	</select>
+	
+	<!-- [방 대기] 참여 사용자 정보 조회 -->
+	<select id = "getUserInfo" parameterType = "int" resultType = "room_user_info">
+		select m.user_id, m.user_nicknm, m.user_img, mr.master from mafia_role mr
+		join member m on mr.user_id = m.user_id
+		where mr.room_no = #{roomNo}
+	</select>
+	
+	<!-- [방 퇴장] master 조회 -->
+	<select id = "getMaster" parameterType = "set_room" resultType = "int">
+		select master from mafia_role 
+		where user_id = #{userId}
+	</select>
+	
+	<!-- [방 퇴장] join_cnt 조회 -->
+	<select id = "getJoinCnt" parameterType = "set_room" resultType ="int">
+		select join_cnt from mafia_room 
+		where room_no = #{roomNo}
+	</select>
+	
+	<!-- [방 퇴장] mafia_role delete -->
+	<delete id = "delUser" parameterType= "set_room">
+		delete from mafia_role 
+		where user_id = #{userId}
+	</delete>
+	
+	<!-- [방 퇴장] - join_cnt -->
+	<update id = "joinCntMinus" parameterType = "set_room">
+		update mafia_room set join_cnt = join_cnt-1 
+		where room_no = #{roomNo}
+	</update>
+	
+	<!-- [방 퇴장] master update -->
+	<update id = "masterUdt" parameterType = "set_room">
+		update mafia_role set master = 1 
+		where room_no = #{roomNo} order by entry_time limit 1
+	</update>
+	
+	<!-- [방 퇴장] mafia_room delete -->
+	<delete id = "delRoom" parameterType = "set_room">
+		delete from mafia_room 
+		where room_no = #{roomNo}
+	</delete>
+	
+</mapper>

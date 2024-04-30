@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace = "jjon.bamyanggang.game.mapper.GameMapper">
+	
+	<!-- [게임시작] mafia_role 조회 -->
+	<select id = "getUserInfo" 	parameterType = "int" resultType = "room_user_info">
+		select mr.role, m.user_id, m.user_nicknm from mafia_role mr
+		join member m on mr.user_id = m.user_id
+		where mr.room_no = #{roomNo}
+   	</select>
+	
+	<!-- [게임시작] 역할 부여 -->
+	<update id = "setRole" parameterType = "Map" >
+		update mafia_role set role = #{role} 
+		where user_id = #{userId}
+	</update>
+	
+	<!-- [게임시작] mafia_vote table 초기세팅 -->
+	<insert id = "initVote" parameterType = "int">
+		insert into mafia_vote (room_no, user_id)
+		select room_no, user_id from mafia_role mr
+		where mr.room_no = #{roomNo}
+	</insert>
+	
+	<!-- [투표] -->
+	<update id = "votePlus" parameterType = "mafia_role">
+		update mafia_vote set vote_cnt = vote_cnt+1 
+		where room_no = #{roomNo} and user_id = #{userId}
+	</update>
+	
+	<!-- [인게임] 최대 투표자 수 조회 -->
+	<select id = "cntMaxUser" parameterType = "int" resultType = "int">
+		select count(*) from mafia_vote mv1
+		where mv1.vote_cnt = (select max(vote_cnt) from mafia_vote mv2
+		where mv2.room_no = #{roomNo})
+	</select>
+	
+	<!-- [인게임] 최대 투표자의 정보 -->
+	<select id = "getMaxRole" parameterType = "int" resultType = "room_user_info">
+		select mr.room_no, mr.role, m.user_id, m.user_nicknm from mafia_role mr
+		join member m on mr.user_id = m.user_id
+		where mr.user_id = (select user_id from mafia_vote mv1
+		where mv1.vote_cnt = (select max(vote_cnt) from mafia_vote mv2
+		where mv2.room_no = #{roomNo}))
+	</select>
+	
+	<!-- [인게임] die -->
+	<update id ="setRoleSt" parameterType = "room_user_info">
+		update mafia_role set role_st = 1
+		where room_no = #{roomNo} and user_id = #{userId} 
+	</update>
+	
+	<!-- [인게임] 생존자 수 조회-->
+	<select id = "cntSurvivor" parameterType = "int" resultType = "int">
+		select count(*) from mafia_role
+		where role_st = 0 and room_no = #{room_no}
+	</select>
+	
+	<!-- [인게임] 승패가 결정남 -->
+	<delete id = "delVote" parameterType = "int">
+		delete from mafia_vote 
+		where room_no = #{roomNo}
+	</delete>
+	
+	<!-- [인게임] 승패가 결정 안남 -->
+	<update id = "resetVote" parameterType = "int">
+		update mafia_vote set vote_cnt = 0 
+		where room_no = #{roomNo}
+	</update>
+	
+	<!-- [게임나가기] 정보삭제 -->
+	<delete id = "delInfo" parameterType = "mafia_role">
+		delete from mafia_role
+		where room_no = #{roomNo} and user_id = #{userId}
+	</delete>
+	
+	<!-- [게임나가기] - join_cnt -->
+	<update id = "joinCntMinus" parameterType = "mafia_role">
+		update mafia_room set join_cnt = join_cnt-1
+		where room_no = #{roomNo}
+	</update>
+	
+	<!-- [게임나가기] join_cnt 조회 -->
+	<select id = "getJoinCnt" parameterType = "mafia_role" resultType = "int">
+		select join_cnt from mafia_room
+		where room_no = #{roomNo}
+	</select>
+	
+	<!-- [게임나가기] 방 삭제 -->
+	<delete id = "delRoom" parameterType = "mafia_role">
+		delete from mafia_room
+		where room_no = #{roomNo} 
+	</delete>
+	
+</mapper>
