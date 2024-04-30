@@ -12,7 +12,6 @@ public class MafiaRole {
 	
 	private String role;
 	private int roomNo;
-	private int id;
 	private String userId;
 	private int roleSt;
 	private int master;

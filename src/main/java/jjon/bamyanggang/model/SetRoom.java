@@ -8,8 +8,6 @@ import lombok.Data;
 @Alias("set_room")
 public class SetRoom {
 	
-	private int id;
-	private String userId;
 	private int roomNo;
 	private String roomNm;
 	private String roomCd;
@@ -17,5 +15,6 @@ public class SetRoom {
 	private String roomPw;
 	private int joinCnt;
 	private int isOnGame;
+	private String userId;
 	
 }
