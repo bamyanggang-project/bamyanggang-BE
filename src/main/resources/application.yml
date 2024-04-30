@@ -1,14 +1,20 @@
 spring:
-
+#저장파일 최대 용량 조절
+ servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB
+      
 #db-mysql
  datasource:
-      url: jdbc:mysql://localhost:3306/
+      url: jdbc:mysql://localhost:3306/jsptest
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: 
-      password: 
+      username: jspid
+      password: jsppass
 
 mybatis:
-   type-aliases-package: jjon.gangsan.model
+#  dto alias를 설정
+   type-aliases-package: jjon.bamyanggang.*
    mapper-locations: classpath:/mapper/*.xml
    config-location: classpath:Mybatis-Config.xml
 
