@@ -39,6 +39,7 @@ public class ReplyContoller {
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 
+	
 	// 댓글목록
 	@GetMapping("/replylist/{postNo}")
 	public ResponseEntity<Map<String, Object>> getReplyList(@PathVariable("postNo") int postNo) throws Exception {

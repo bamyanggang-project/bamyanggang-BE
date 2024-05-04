@@ -2,9 +2,9 @@ spring:
 #저장파일 최대 용량 조절
  servlet:
     multipart:
-      maxFileSize: 10MB
-      maxRequestSize: 20MB
-      
+      maxFileSize: 200MB
+      maxRequestSize: 215MB
+       
 #db-mysql
  datasource:
       url: jdbc:mysql://localhost:3306/jsptest
@@ -21,3 +21,4 @@ mybatis:
 #port
 server:
   port: 80
+

@@ -26,7 +26,6 @@ public class CommunityServiceImpl implements CommunityDao {
 	
 	//자유게시판 상세보기
 	public CommunityDto getCommunity(int postNo)throws Exception {
-		System.out.println("삭제 서비스");
 		return CommunityDao.getCommunity(postNo);
 	}
 	
