@@ -6,8 +6,8 @@
 
 <!-- 게시판 저장  -->
 <insert id="communityInsert" parameterType="community">
-	insert into community (user_id,title,content,vw_cnt,wrtn_date)
-	values (#{userId},#{title},#{content},0,CURRENT_DATE)
+	insert into community (user_id,title,content,vw_cnt,img,wrtn_date)
+	values (#{userId},#{title},#{content},0,#{img},now())
 </insert>
 
 <!-- 게시판 목록 -->
