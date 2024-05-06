@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="jjon.bamyanggang.reply.mapper.ReplyDao">
+
+<!-- 댓글 목록 -->
+<select id="getReplyList" parameterType="int" resultType="reply">
+	select * from community_reply where post_no=#{postNo} order by reply_no
+</select>
+
+<insert id="replyInsert" parameterType="reply">
+    <!-- 해당 게시물의 댓글 중 가장 큰 reply_no 값 가져오기 -->
+    <selectKey resultType="int" keyProperty="replyNo" order="BEFORE">
+        select coalesce(max(reply_no), 0) + 1 as replyNo
+        from community_reply
+        where post_no = #{postNo}
+    </selectKey>
+    
+    <!-- 댓글 삽입 -->
+    insert into community_reply (post_no, reply_no, user_id, content, wrtn_date)
+    values (#{postNo}, #{replyNo}, #{userId}, #{content}, CURRENT_DATE)
+</insert>
+
+
+<!-- 댓글수정 -->
+<update id="replyUpdate" parameterType="reply">
+	update community_reply set content=#{content}
+	where post_no=#{postNo} and reply_no=#{replyNo}
+</update>
+
+<!-- 댓글삭제 -->
+<delete id="replyDelete" parameterType="reply">
+	delete from community_reply where post_no=#{postNo} and reply_no=#{replyNo}
+</delete>
+
+
+
+</mapper>

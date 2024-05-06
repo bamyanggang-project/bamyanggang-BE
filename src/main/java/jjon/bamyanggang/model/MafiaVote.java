@@ -9,7 +9,7 @@ import lombok.Data;
 public class MafiaVote {
 	
 	private int roomNo;
-	private String role;
+	private String userId;
 	private int voteCnt;
 	
 }
