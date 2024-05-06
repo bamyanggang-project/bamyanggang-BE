@@ -1,0 +1,524 @@
+From 96ce833a848a97a7f4582e61ac175c6e0927103a Mon Sep 17 00:00:00 2001
+From: owencity <skyko6530@gmail.com>
+Date: Sat, 27 Apr 2024 19:51:09 +0900
+Subject: [PATCH] =?UTF-8?q?=EB=A7=88=EC=9D=B4=ED=8E=98=EC=9D=B4=EC=A7=80?=
+ =?UTF-8?q?=20mybatis=20=EC=9D=B4=EC=9A=A9=ED=95=9C=20=ED=9A=8C=EC=9B=90?=
+ =?UTF-8?q?=EA=B0=80=EC=9E=85=20,=20=ED=9A=8C=EC=9B=90=EC=88=98=EC=A0=95?=
+ =?UTF-8?q?=20,=20=ED=94=84=EB=A1=9C=ED=95=84=20=EC=9D=B4=EB=AF=B8?=
+ =?UTF-8?q?=EC=A7=80?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../bamyanggang/member/MemberController.java  | 118 +++++++++++++
+ .../jjon/bamyanggang/member/MemberDto.java    |  34 ++++
+ .../jjon/bamyanggang/member/MemberMapper.java |  18 ++
+ .../bamyanggang/member/MemberService.java     | 156 ++++++++++++++++++
+ src/main/resources/application.yml            |  59 ++++++-
+ src/main/resources/mapper/JoinMapper.xml      |  63 +++++++
+ 6 files changed, 440 insertions(+), 8 deletions(-)
+ create mode 100644 src/main/java/jjon/bamyanggang/member/MemberController.java
+ create mode 100644 src/main/java/jjon/bamyanggang/member/MemberDto.java
+ create mode 100644 src/main/java/jjon/bamyanggang/member/MemberMapper.java
+ create mode 100644 src/main/java/jjon/bamyanggang/member/MemberService.java
+ create mode 100644 src/main/resources/mapper/JoinMapper.xml
+
+diff --git a/src/main/java/jjon/bamyanggang/member/MemberController.java b/src/main/java/jjon/bamyanggang/member/MemberController.java
+new file mode 100644
+index 0000000..4b3a55c
+--- /dev/null
++++ b/src/main/java/jjon/bamyanggang/member/MemberController.java
+@@ -0,0 +1,118 @@
++package jjon.bamyanggang.member;
++
++import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.multipart.MultipartFile;
++import lombok.RequiredArgsConstructor;
++import java.util.List;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.CrossOrigin;
++import org.springframework.web.bind.annotation.DeleteMapping;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.PutMapping;
++import org.springframework.web.bind.annotation.RequestBody;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RequestPart;
++
++@RequiredArgsConstructor
++@RestController
++@CrossOrigin(origins = "*")
++@RequestMapping("")
++public class MemberController {
++	
++	  private final MemberService memberService;
++	  
++	  @PostMapping("/addmember")
++	  public ResponseEntity<String> addMember(@RequestBody MemberDto memberDto) {
++	        // 이미지 파일이 전송되었는지 확인
++		 
++
++	        boolean success = memberService.addMember(memberDto);
++	        if (success) {
++	            return ResponseEntity.ok("회원가입이 성공적으로 처리되었습니다.");
++	        } else {
++	            return ResponseEntity.badRequest().body("회원가입실패, ID ,닉네임, 이메일 , 휴대폰번호 중복검사 해주세요");
++	        }
++	    }
++	  
++	  @PostMapping("/addmember/image")
++	  public String addMemberImage(@RequestPart("profileImage") MultipartFile profileImage)
++	  {
++	      
++	          if (profileImage != null && !profileImage.isEmpty()) {
++	              String imagePath = memberService.saveImage(profileImage);
++	              if (imagePath != null) {
++	                  return "프로필 이미지가 성공적으로 업로드되었습니다.";
++	              } else {
++	                  return "이미지 파일 저장에 실패했습니다.";
++	              }
++	          } else {
++	              return "이미지 파일이 비어있습니다. 회원가입완료";
++	          }
++	     
++	  }
++	  
++	  @PutMapping("/update")
++	  public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) {
++		  
++		  memberDto.setUserId(memberDto.getUserId());
++		 
++		  
++		  boolean success = memberService.updateMember(memberDto);
++		 if(success) {
++			 return ResponseEntity.ok("회원 수정 완료");
++		 }
++		 else {
++			 return ResponseEntity.badRequest().body("회줭 수정 실패하였습니다.");
++		 }
++	  }
++		  
++		  @DeleteMapping("/delete")
++		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
++			  
++			  boolean succes = memberService.deleteMember(memberDto);
++			  if(succes) {
++				  return ResponseEntity.ok("회원 탈퇴원료");
++			  }
++			  	return ResponseEntity.badRequest().body("회원 탈퇴 실패");
++			  
++		  }
++	  
++	// 중복 확인을 위한 엔드포인트 추가
++      @PostMapping("/checkIdAvailability/idCheck")
++      public Integer checkIdAvailability(@RequestBody String userId) {
++    	  int availability = memberService.isIdAvailable(userId);
++    	    System.out.println(availability);
++    	    System.out.println(userId);
++    	    return availability;
++    	    
++      }
++
++      @PostMapping("/checkIdAvailability/nickNameCheck")
++      public Integer checkNickAvailability(@RequestBody String nickName) {
++    	  int availability = memberService.isNickNameAvailable(nickName);
++    	    System.out.println(availability);
++    	    System.out.println(nickName);
++    	    return availability;
++    	    
++      }
++
++      @PostMapping("/checkIdAvailability/emailCheck")
++      public Integer checkEmailAvailability(@RequestBody String emailNum1) {
++    	  int availability = memberService.isEmailAvailable(emailNum1);
++    	    System.out.println(availability);
++    	    System.out.println(emailNum1);
++    	    return availability;
++    	    
++      }
++      @PostMapping("/checkIdAvailability/phoneNumCheck")
++      public Integer checkPhoneAvailability(@RequestBody List<String> phoneNumbers) {
++          String phoneNum1 = phoneNumbers.get(0);
++          String phoneNum2 = phoneNumbers.get(1);
++          String phoneNum3 = phoneNumbers.get(2);
++          
++          System.out.println("테스트번호 : " + phoneNum1 + phoneNum2 + phoneNum3);
++          int availability = memberService.isPhoneNumAvailable(phoneNum1, phoneNum2, phoneNum3);
++          System.out.println(availability);
++          return availability;
++      }
++}
+\ No newline at end of file
+diff --git a/src/main/java/jjon/bamyanggang/member/MemberDto.java b/src/main/java/jjon/bamyanggang/member/MemberDto.java
+new file mode 100644
+index 0000000..2c5ca24
+--- /dev/null
++++ b/src/main/java/jjon/bamyanggang/member/MemberDto.java
+@@ -0,0 +1,34 @@
++package jjon.bamyanggang.member;
++
++
++import lombok.Getter;
++import lombok.Setter;
++
++@Getter
++@Setter
++public class MemberDto {
++	
++	private String userId;
++	private String passWd;
++	private String userName;
++	private String nickName;
++	private String profileImagePath;
++	private String phoneNum1;
++	private String phoneNum2;
++	private String phoneNum3;	
++	private String emailNum1;
++	private String emailNum2;
++	private String birth;
++	private String gender;
++	
++	private String role = "user";
++	private int withdrawal = 1; // 임의설정
++
++
++
++
++	
++	
++	
++
++}
+diff --git a/src/main/java/jjon/bamyanggang/member/MemberMapper.java b/src/main/java/jjon/bamyanggang/member/MemberMapper.java
+new file mode 100644
+index 0000000..785f109
+--- /dev/null
++++ b/src/main/java/jjon/bamyanggang/member/MemberMapper.java
+@@ -0,0 +1,18 @@
++package jjon.bamyanggang.member;
++
++
++import org.apache.ibatis.annotations.Mapper;
++
++@Mapper
++public interface MemberMapper {
++		
++		public int addMember(MemberDto memberDto);
++		public void updateMember(MemberDto memberDto);
++		public void deleteMember(MemberDto memberDto);
++		
++		public int isMemberExistsById(String userId);
++	    public int isMemberExistsByEmail(String emailnum1);
++	    public int isMemberExistsByPhoneNumber(String phoneNum1, String phoneNum2, String phoneNum3);
++	    public int isMemberExistsByNickName(String nickName);
++	    
++}
+diff --git a/src/main/java/jjon/bamyanggang/member/MemberService.java b/src/main/java/jjon/bamyanggang/member/MemberService.java
+new file mode 100644
+index 0000000..b92cdac
+--- /dev/null
++++ b/src/main/java/jjon/bamyanggang/member/MemberService.java
+@@ -0,0 +1,156 @@
++package jjon.bamyanggang.member;
++
++import java.io.IOException;
++import java.nio.file.Files;
++import java.nio.file.Path;
++import java.nio.file.Paths;
++
++import org.springframework.beans.factory.annotation.Value;
++import org.springframework.stereotype.Service;
++import org.springframework.web.multipart.MultipartFile;
++
++
++@Service
++public class MemberService {
++
++	private final MemberMapper memberMapper;
++	
++    @Value("${upload.directory}")
++    private String uploadDirectory;
++
++	
++	public MemberService(MemberMapper memberMapper) {
++		
++		this.memberMapper = memberMapper;
++	
++	}
++	
++	// 중복 확인 메서드 추가
++	 public int isIdAvailable(String userId) {
++	        
++		 
++		int result =  memberMapper.isMemberExistsById(userId);
++		return result;
++		  
++	 }
++	
++
++    public int isEmailAvailable(String emailNum1) {
++    	int result =  memberMapper.isMemberExistsByEmail(emailNum1);
++		return result;
++    }
++
++    public int isNickNameAvailable(String nickName) {
++    	int result =  memberMapper.isMemberExistsByNickName(nickName);
++		return result;
++    }
++
++    public int isPhoneNumAvailable(String phoneNum1, String phoneNum2, String phoneNum3) {
++        // getMemberByPhoneNumber 메서드의 반환값이 null이면 사용 가능한 핸드폰 번호이고,
++        // null이 아니면 이미 사용 중인 핸드폰 번호입니다.
++    	int result = memberMapper.isMemberExistsByPhoneNumber(phoneNum1, phoneNum2, phoneNum3);
++    	System.out.println(result);
++    	return result;
++    }
++	
++	public boolean addMember(MemberDto memberDto) {
++		
++		
++		        // 이미 등록된 아이디인지 확인
++			 if (isIdAvailable(memberDto.getUserId()) > 0 ||
++			            isEmailAvailable(memberDto.getEmailNum1()) > 0 ||
++			            isNickNameAvailable(memberDto.getNickName()) > 0 ||
++			            isPhoneNumAvailable(memberDto.getPhoneNum1(), memberDto.getPhoneNum2(), memberDto.getPhoneNum3()) > 0
++			            
++					 ) {
++			            // 이미 등록된 정보가 하나라도 있으면 회원 추가 실패
++			            return false;
++			        }
++		        // 이미지 파일 업로드 로직 (추가적으로 필요한 경우 추가)
++		        else {
++		        // 회원 정보 추가
++		        memberMapper.addMember(memberDto);
++		        return true;
++		        }
++		    } 
++	
++
++	
++	
++	public boolean updateMember(MemberDto memberDto) {
++		
++		
++			
++		try {
++	        // 클라이언트로부터 전달된 memberDto에는 업데이트할 회원의 정보가 포함되어 있습니다.
++	        // 따라서 memberDto를 그대로 매퍼의 updateMember 메서드에 전달하여 업데이트를 수행합니다.
++	        memberMapper.updateMember(memberDto);
++	        return true;
++	    } catch (Exception e) {
++	        // 업데이트에 실패한 경우에 대한 처리
++	        return false;
++	    }
++	}
++	
++	public boolean deleteMember(MemberDto memberDto) {
++		
++		 	
++			
++			memberMapper.deleteMember(memberDto);
++			return true;
++		
++		
++	}
++	
++	
++		
++	
++
++
++
++	public String saveImage(MultipartFile profileImage) {
++        try {
++        	
++        	if (profileImage == null || profileImage.isEmpty()) {
++                // 이미지가 전송되지 않았을 때의 처리
++                return null;
++            }
++            // 파일을 저장할 경로 설정
++            Path uploadPath = Paths.get(uploadDirectory);
++            // 디렉토리가 존재하지 않으면 생성
++            if (!Files.exists(uploadPath)) {
++                Files.createDirectories(uploadPath);
++            }
++            // 파일명 생성
++            String fileName = profileImage.getOriginalFilename();
++            // 파일 저장 경로 설정
++            Path filePath = uploadPath.resolve(fileName);
++            // 파일 저장
++            profileImage.transferTo(filePath.toFile());
++            // 저장된 파일의 경로를 반환
++            return filePath.toString();
++        } catch (IOException e) {
++            e.printStackTrace();
++            return null;
++        }
++    }
++
++    public byte[] getImageBytes(String imagePath) {
++    	
++    	if (imagePath == null || imagePath.isEmpty()) {
++            // 이미지가 전송되지 않았을 때의 처리
++            return null;
++        }
++        try {
++            Path path = Paths.get(imagePath);
++            return Files.readAllBytes(path);
++        } catch (IOException e) {
++            e.printStackTrace();
++            return null;
++        }
++    }
++}
++	
++
++	
++
+diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
+index 02c451e..bf4519b 100644
+--- a/src/main/resources/application.yml
++++ b/src/main/resources/application.yml
+@@ -1,17 +1,60 @@
++
++
+ spring:
+ 
++  
+ #db-mysql
+  datasource:
+-      url: jdbc:mysql://localhost:3306/
++      url: jdbc:mysql://localhost:3306/token
+       driver-class-name: com.mysql.cj.jdbc.Driver
+-      username: 
+-      password: 
++      username: weather
++      password: 1234
+ 
+-mybatis:
+-   type-aliases-package: jjon.gangsan.model
+-   mapper-locations: classpath:/mapper/*.xml
+-   config-location: classpath:Mybatis-Config.xml
++ servlet:
++    multipart:
++      enabled: true
++      file-size-threshold: 2KB
++      max-file-size: 200MB
++      max-request-size: 215MB
+ 
+ #port
+ server:
+-  port: 80
+\ No newline at end of file
++  port: 80
++
++upload:
++   directory: C:/project/bamyanggang/uploadimage
++
++logging:
++  level:
++    org.springframework.web: DEBUG
++
++
++mybatis:
++ type-aliases-package: jjon.bamyanggang.member
++ mapper-locations: classpath:/mapper/*.xml
++ config-location: classpath:Mybatis-Config.xml
++
++    
++
++jpa:
++   hibernate:
++     ddl-auto: 
++     naming:
++       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
++     properties:
++       hibernate:
++         show_sql: true
++         format_sql: true
++
++
++
++  
++jwt:
++  header: Authorization
++  secret: 36115f098c6ee700e838c927205161eec6095683f2036d8981316e8739f4696b79b29bc1c882a75e13f3bc104a4e487ad320b107c4a03f61d5862e26cff9d31a
++  token-validity-in-seconds: 86400
++
++
++
++
++
+diff --git a/src/main/resources/mapper/JoinMapper.xml b/src/main/resources/mapper/JoinMapper.xml
+new file mode 100644
+index 0000000..9525638
+--- /dev/null
++++ b/src/main/resources/mapper/JoinMapper.xml
+@@ -0,0 +1,63 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
++
++<mapper namespace="jjon.bamyanggang.member.MemberMapper">
++
++<insert id="addMember" parameterType="MemberDto">
++    /* 회원가입 */
++    INSERT INTO member
++        (user_id, user_pw, user_nm, user_nicknm, user_img, user_tel1, user_tel2, user_tel3, user_email1, user_email2, user_birth, user_gender, user_register, user_withdrawal, role)
++    VALUES
++        (#{userId}, #{passWd}, #{userName}, #{nickName}, #{profileImagePath}, #{phoneNum1}, #{phoneNum2}, #{phoneNum3}, #{emailNum1}, #{emailNum2}, #{birth}, #{gender}, NOW(), #{withdrawal}, #{role});
++</insert>
++
++<select id="isMemberExistsById" resultType="int" parameterType="String">
++    SELECT COUNT(*) FROM member WHERE user_id = #{userId}
++</select>
++
++<select id="isMemberExistsByEmail" resultType="int" parameterType="String">
++    SELECT COUNT(*) FROM member WHERE user_email1 = #{emailNum1}
++</select>
++
++<select id="isMemberExistsByPhoneNumber" resultType="int" parameterType="String">
++    SELECT COUNT(*) FROM member WHERE user_tel1 = #{arg0} AND user_tel2 = #{arg1} AND user_tel3 = #{arg2}
++</select>
++
++<select id="isMemberExistsByNickName" resultType="int" parameterType="String">
++    SELECT COUNT(*) FROM member WHERE user_nicknm = #{nickName}
++</select>
++
++<select id="" resultType="memberDto" parameterType="String">
++	SELECT * FROM member WHERE user_Id = #{userId}
++</select>
++
++<update id="updateMember"  parameterType="memberDto">
++	 
++	 update member
++	 set
++     user_Id = #{userId},
++     user_pw = #{passWd},
++     user_nm = #{userName},
++     user_nicknm = #{nickName},
++     user_img = #(user_img),
++     user_tel1 = #{phoneNum1},
++     user_tel2 = #{phoneNum2},
++     user_tel3 = #{phoneNum3},
++     user_email1 = #{emailNum1},
++     user_email2 = #{emailNum2},
++     user_birth = #{birth},
++     user_gender = #{gender}
++     WHERE user_Id = #{userId} 
++    
++</update>
++
++<delete id="deleteMember" parameterType="MemberDto">
++	
++	delete from member where user_id=#{userId}
++	
++</delete>
++
++
++
++
++</mapper>
+\ No newline at end of file
+-- 
+2.44.0.windows.1
+
