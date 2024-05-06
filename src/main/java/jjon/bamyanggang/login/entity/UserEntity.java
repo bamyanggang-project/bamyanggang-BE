@@ -24,6 +24,7 @@ public class UserEntity {
 	private String  username;
 	@Column(name="user_pw")
 	private String  password;
+	@Column(name="user_authority")
 	private String  role;
 	
 }

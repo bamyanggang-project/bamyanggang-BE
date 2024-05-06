@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberMapper {
 		
 		public int addMember(MemberDto memberDto);
+		public MemberDto getUserByUserId(String userId);
 		public void updateMember(MemberDto memberDto);
 		public void deleteMember(MemberDto memberDto);
 		public String findByPassword(String userId);

@@ -17,7 +17,7 @@ public class RefreshEntity {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
 	
-	private String username;
+	private String username;	
 	private String refresh;
 	private String expiration;
 }

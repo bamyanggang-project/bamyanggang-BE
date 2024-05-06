@@ -3,9 +3,11 @@ package jjon.bamyanggang.member;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class MemberDto {
 	
 	private String userId;
@@ -21,7 +23,7 @@ public class MemberDto {
 	private String birth;
 	private String gender;
 	
-	private String role = "user";
+	private String userAuthority = "user";
 	private int withdrawal = 1; // 임의설정
 
 

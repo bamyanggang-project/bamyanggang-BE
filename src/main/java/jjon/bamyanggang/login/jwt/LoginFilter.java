@@ -67,7 +67,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 		// 로그인 성공시 싱행하는 메소드(여기서 JWT 를 발급하면됨)
 		@Override
-		protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication )
+		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication )
 		{
 		    //유저 정보
 		    String username = authentication.getName();
@@ -85,7 +85,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		    //응답 설정
 		    response.setHeader("access", access);
+		    response.addHeader("Authorization", access);
 		    response.addCookie(createCookie("refresh", refresh));
+		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
 			System.out.println("토큰 발급 성공 access : " + access + " refresh : " + refresh);
 		}
