@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jjon.bamyanggang.community.service.CommunityServiceImpl;
+import jjon.bamyanggang.community.service.CommunityService;
 import jjon.bamyanggang.model.CommunityDto;
 import jjon.bamyanggang.model.ReplyDto;
-import jjon.bamyanggang.reply.service.ReplyServiceImpl;
+import jjon.bamyanggang.reply.service.ReplyService;
 
 @RestController
 @RequestMapping("/reply")
 public class ReplyContoller {
 
 	@Autowired
-	private ReplyServiceImpl replyService;
+	private ReplyService replyService;
 
 	@Autowired
-	private CommunityServiceImpl communityService;
+	private CommunityService communityService;
 
 	// 댓글작성 (로그인 확인)
 	@PostMapping("/replywrite")
