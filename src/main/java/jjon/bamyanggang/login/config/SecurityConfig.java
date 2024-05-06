@@ -76,6 +76,7 @@ public class SecurityConfig {
 	                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
 					configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
 					configuration.addExposedHeader("Authorization");
+					configuration.addExposedHeader("Set-Cookie");
 
 	                return configuration;
 	                // 설정된 CORS 구성 반환
