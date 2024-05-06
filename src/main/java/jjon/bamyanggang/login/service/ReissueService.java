@@ -76,7 +76,7 @@ public class ReissueService {
         // response
         response.setHeader("access", newAccess);
         response.addHeader("Authorization", newAccess);
-        response.addHeader("refresh", newRefresh);
+        	
         response.addCookie(createCookie("refresh", newRefresh));
         
         return new ResponseEntity<>(HttpStatus.OK);

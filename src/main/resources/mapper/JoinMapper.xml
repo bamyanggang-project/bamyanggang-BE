@@ -6,9 +6,9 @@
 <insert id="addMember" parameterType="MemberDto">
     /* 회원가입 */
     INSERT INTO member
-        (user_id, user_pw, user_nm, user_nicknm, user_img, user_tel1, user_tel2, user_tel3, user_email1, user_email2, user_birth, user_gender, user_register, user_withdrawal, role)
+        (user_id, user_pw, user_nm, user_nicknm, user_img, user_tel1, user_tel2, user_tel3, user_email1, user_email2, user_birth, user_gender, user_register, user_withdrawal,  user_authority )
     VALUES
-        (#{userId}, #{passWd}, #{userName}, #{nickName}, #{profileImagePath}, #{phoneNum1}, #{phoneNum2}, #{phoneNum3}, #{emailNum1}, #{emailNum2}, #{birth}, #{gender}, NOW(), #{withdrawal}, #{role});
+        (#{userId}, #{passWd}, #{userName}, #{nickName}, #{profileImagePath}, #{phoneNum1}, #{phoneNum2}, #{phoneNum3}, #{emailNum1}, #{emailNum2}, #{birth}, #{gender}, NOW(), #{withdrawal}, #{userAuthority});
 </insert>
 
  <select id="getUserByUserId" parameterType="String" resultType="MemberDto">
@@ -54,6 +54,7 @@
      user_email2 = #{emailNum2},
      user_birth = #{birth},
      user_gender = #{gender}
+    
      WHERE user_Id = #{userId} 
     
 </update>
