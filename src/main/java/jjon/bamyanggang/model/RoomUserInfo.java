@@ -8,10 +8,11 @@ import lombok.Data;
 @Alias("room_user_info")
 public class RoomUserInfo {
 	
+	private int roomNo;
 	private String role;
+	private int master;
 	private String userId;
 	private String userNicknm;
 	private String userImg;
-	private int master;
 	
 }

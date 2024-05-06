@@ -10,14 +10,14 @@ import jjon.bamyanggang.model.SetRoom;
 
 @Mapper
 public interface MafiaMapper {
-
-	// [방 생성] mafia_room insert
+	
+	// [방 생성] mafia_room table 세팅
 	public void createRoom(SetRoom setRoom);
 	
 	// [방 생성] 방 번호 조회
 	public int getRoomNo(String randomCode);
 	
-	// [방 생성] mafia_role insert
+	// [방 생성] mafia_role 초기세팅 
 	public void initRoom(SetRoom setRoom);
 	
 	// [방 생성] 중복 코드 확인
@@ -36,10 +36,10 @@ public interface MafiaMapper {
 	public int getJoinNo(SetRoom setRoom);
 	
 	// [방 대기] 방 정보 조회
-	public MafiaRoom getRoomInfo(MafiaRoom mafiaRoom);
+	public MafiaRoom getRoomInfo(int roomNo);
 	
 	// [방 대기] 참여 사용자 정보 조회
-	public List<RoomUserInfo> getUserInfo(MafiaRoom mafiaRoom);
+	public List<RoomUserInfo> getUserInfo(int roomNo);
 	
 	// [방 퇴장] master 조회
 	public Integer getMaster(SetRoom setRoom);
@@ -48,15 +48,15 @@ public interface MafiaMapper {
 	public int getJoinCnt(SetRoom setRoom);
 	
 	// [방 퇴장] mafia_role delete
-	public void userDel(SetRoom setRoom);
+	public void delUser(SetRoom setRoom);
 
 	// [방 퇴장] - join_cnt
 	public void joinCntMinus(SetRoom setRoom);
 	
 	// [방 퇴장] master update
-	public void masterUpdate(SetRoom setRoom);
+	public void masterUdt(SetRoom setRoom);
 	
 	// [방 퇴장] mafia_room delete
-	public void roomDel(SetRoom setRoom);
+	public void delRoom(SetRoom setRoom);
 	
 }

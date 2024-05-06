@@ -8,6 +8,8 @@ import lombok.Data;
 @Alias("member")
 public class Member {
 	
+	private int id;
+	private String userAuthority;
 	private String userId;
 	private String userPw;
 	private String userNm;
