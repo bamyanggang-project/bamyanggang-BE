@@ -3,10 +3,15 @@ package jjon.bamyanggang.member;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,10 +56,10 @@ public class MemberController {
 	     
 	  }
 	  
-	  @PutMapping("/update")
-	  public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) {
-		  
-		  memberDto.setUserId(memberDto.getUserId());
+	  @PutMapping("/update/{userId}")
+	  public ResponseEntity<String> updateMember(@PathVariable("userId") String userId, @RequestBody MemberDto memberDto) {
+		  memberDto.setUserId(userId);
+		  //memberDto.setUserId(memberDto.getUserId());
 		 
 		  
 		  boolean success = memberService.updateMember(memberDto);
@@ -65,6 +70,8 @@ public class MemberController {
 			 return ResponseEntity.badRequest().body("회줭 수정 실패하였습니다.");
 		 }
 	  }
+	  
+	  
 		  
 		  @DeleteMapping("/deletemember")
 		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
@@ -76,6 +83,15 @@ public class MemberController {
 			  	return ResponseEntity.badRequest().body("회원 탈퇴 실패");
 			  
 		  }
+		  
+			  @GetMapping("userInfo/{userId}")
+			    public MemberDto getUserByUserId(@PathVariable("userId") String userId) {
+			      MemberDto memberDto =  memberService.getUserByUserId(userId);
+			      
+			      System.out.println(memberDto);
+			      return  memberDto;
+			      
+			    }
 	  
 	// 중복 확인을 위한 엔드포인트 추가
       @PostMapping("/checkIdAvailability/idCheck")

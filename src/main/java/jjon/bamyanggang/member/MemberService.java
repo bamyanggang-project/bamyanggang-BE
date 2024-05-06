@@ -71,7 +71,6 @@ public class MemberService {
 			            // 이미 등록된 정보가 하나라도 있으면 회원 추가 실패
 			            return false;
 			        }
-		        // 이미지 파일 업로드 로직 (추가적으로 필요한 경우 추가)
 		        else {
 		        String hashPassWd = bCryptPasswordEncoder.encode(memberDto.getPassWd());
 		        memberDto.setPassWd(hashPassWd);
@@ -79,6 +78,13 @@ public class MemberService {
 		        return true;
 		        }
 		    } 
+	
+	public MemberDto getUserByUserId(String userId) {
+	        
+		
+	        return memberMapper.getUserByUserId(userId);
+	        
+	    }
 	
 
 	

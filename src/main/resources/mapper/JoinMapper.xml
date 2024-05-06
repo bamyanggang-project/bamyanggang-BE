@@ -11,6 +11,13 @@
         (#{userId}, #{passWd}, #{userName}, #{nickName}, #{profileImagePath}, #{phoneNum1}, #{phoneNum2}, #{phoneNum3}, #{emailNum1}, #{emailNum2}, #{birth}, #{gender}, NOW(), #{withdrawal}, #{role});
 </insert>
 
+ <select id="getUserByUserId" parameterType="String" resultType="MemberDto">
+         SELECT user_id AS userId, user_nm AS userName, user_nm AS nickName, 
+    user_tel1 AS phoneNum1, user_tel2 AS phoneNum2, user_tel3 AS phoneNum3, user_email1 AS emailNum1, user_email2 AS emailNum2, 
+    user_birth AS birth, user_gender AS gender
+    FROM member WHERE user_id = #{userId}
+    </select>
+
 <select id="isMemberExistsById" resultType="int" parameterType="String">
     SELECT COUNT(*) FROM member WHERE user_id = #{userId}
 </select>
