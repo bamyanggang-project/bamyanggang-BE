@@ -1,17 +1,64 @@
+
+
 spring:
 
+  
 #db-mysql
  datasource:
-      url: jdbc:mysql://localhost:3306/bamyanggang
+      url: jdbc:mysql://localhost:3306/token
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: test
+      username: weather
       password: 1234
 
-mybatis:
-   type-aliases-package: jjon.bamyanggang.model
-   mapper-locations: classpath:/mapper/*.xml
-   config-location: classpath:Mybatis-Config.xml
+
+ servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+
+
 
 #port
 server:
   port: 80
+
+upload:
+   directory: C:/project/bamyanggang/uploadimage
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+
+mybatis:
+ type-aliases-package: jjon.bamyanggang.*
+ mapper-locations: classpath:/mapper/*.xml
+ config-location: classpath:Mybatis-Config.xml
+
+    
+
+jpa:
+   hibernate:
+     ddl-auto: 
+     naming:
+       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+     properties:
+       hibernate:
+         show_sql: true
+         format_sql: true
+
+
+
+  
+jwt:
+  header: Authorization
+  secret: 36115f098c6ee700e838c927205161eec6095683f2036d8981316e8739f4696b79b29bc1c882a75e13f3bc104a4e487ad320b107c4a03f61d5862e26cff9d31a
+  token-validity-in-seconds: 86400
+
+
+
+
+

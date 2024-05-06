@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="jjon.bamyanggang.community.mapper.CommunityDao">
+
+<!-- 게시판 저장  -->
+<insert id="communityInsert" parameterType="community">
+	insert into community (user_id,title,content,vw_cnt,img,wrtn_date)
+	values (#{userId},#{title},#{content},0,#{img},now())
+</insert>
+
+<!-- 게시판 목록 -->
+<select id="getCommunityList" resultType="community">
+	select * from community order by 
+</select>
+
+<!-- 게시판 상세보기 -->
+<select id="getCommunity" parameterType="int" resultType="community">
+	select * from community where post_no=#{postNo}
+</select>
+
+<!-- 조회수 증가 -->
+<update id="updateVw" parameterType="int">
+	update community set vw_cnt = vw_cnt+1 where post_no = #{postNo}
+</update>
+	
+<!-- 게시판 수정 -->
+<update id="communityUpdate" parameterType="community">
+	update community set title=#{title},content=#{content}
+	where post_no = #{postNo}
+</update>
+
+<!-- 게시판 삭제 -->
+<delete id="communityDelete" parameterType="int">
+	delete from community where post_no = #{postNo}
+</delete>
+
+
+</mapper>

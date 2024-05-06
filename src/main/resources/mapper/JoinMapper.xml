@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jjon.bamyanggang.member.MemberMapper">
+
+<insert id="addMember" parameterType="MemberDto">
+    /* 회원가입 */
+    INSERT INTO member
+        (user_id, user_pw, user_nm, user_nicknm, user_img, user_tel1, user_tel2, user_tel3, user_email1, user_email2, user_birth, user_gender, user_register, user_withdrawal, role)
+    VALUES
+        (#{userId}, #{passWd}, #{userName}, #{nickName}, #{profileImagePath}, #{phoneNum1}, #{phoneNum2}, #{phoneNum3}, #{emailNum1}, #{emailNum2}, #{birth}, #{gender}, NOW(), #{withdrawal}, #{role});
+</insert>
+
+ <select id="getUserByUserId" parameterType="String" resultType="MemberDto">
+         SELECT user_id AS userId, user_nm AS userName, user_nm AS nickName, 
+    user_tel1 AS phoneNum1, user_tel2 AS phoneNum2, user_tel3 AS phoneNum3, user_email1 AS emailNum1, user_email2 AS emailNum2, 
+    user_birth AS birth, user_gender AS gender
+    FROM member WHERE user_id = #{userId}
+    </select>
+
+<select id="isMemberExistsById" resultType="int" parameterType="String">
+    SELECT COUNT(*) FROM member WHERE user_id = #{userId}
+</select>
+
+<select id="isMemberExistsByEmail" resultType="int" parameterType="String">
+    SELECT COUNT(*) FROM member WHERE user_email1 = #{emailNum1}
+</select>
+
+<select id="isMemberExistsByPhoneNumber" resultType="int" parameterType="String">
+    SELECT COUNT(*) FROM member WHERE user_tel1 = #{arg0} AND user_tel2 = #{arg1} AND user_tel3 = #{arg2}
+</select>
+
+<select id="isMemberExistsByNickName" resultType="int" parameterType="String">
+    SELECT COUNT(*) FROM member WHERE user_nicknm = #{nickName}
+</select>
+
+<select id="findByPassword" resultType="String" parameterType="String">
+	SELECT user_pw FROM member WHERE user_id = #{userId}
+</select>
+
+<update id="updateMember"  parameterType="memberDto">
+	 
+	 update member
+	 set
+     user_Id = #{userId},
+     user_pw = #{passWd},
+     user_nm = #{userName},
+     user_nicknm = #{nickName},
+     user_img = #(user_img),
+     user_tel1 = #{phoneNum1},
+     user_tel2 = #{phoneNum2},
+     user_tel3 = #{phoneNum3},
+     user_email1 = #{emailNum1},
+     user_email2 = #{emailNum2},
+     user_birth = #{birth},
+     user_gender = #{gender}
+     WHERE user_Id = #{userId} 
+    
+</update>
+
+<delete id="deleteMember" parameterType="MemberDto">
+	
+	delete from member where user_id=#{userId}
+	
+</delete>
+
+
+
+
+</mapper>

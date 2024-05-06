@@ -26,7 +26,7 @@ public class GameController {
 
 	// [게임시작] 
 	// int형 room_no 값을 담아 요청 (Front-End)
-	// MafiaRoom 객체에 방에 입장한 사용자들의 정보 값을 담아 응답 (Back-End)
+	// RoomUserInfo 객체에 방에 입장한 사용자들의 정보 값을 담아 응답 (Back-End)
 	@GetMapping("gameStart")
 	public ResponseEntity<Map<String, Object>> gameStart(@RequestParam("roomNo") int roomNo) {
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -65,6 +65,8 @@ public class GameController {
 	}
 	
 	// [인게임]
+	// int형 room_no 값을 담아 요청 (Front-End)
+	// Map객체에 result, user_id, user_nicknm 값을 담아 응답 (Back-End)
 	@GetMapping("resultVote")
 	public ResponseEntity<Map<String, Object>> resultVote (@RequestParam("roomNo") int roomNo) {
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -84,6 +86,7 @@ public class GameController {
 	}
 	
 	// [게임나가기]
+	// MafiaRole 객체에 room_no, user_id 값을 담아 요청 (Front-End)
 	@PostMapping("gameOut")
 	public ResponseEntity<Map<String, Object>> gameOut(@RequestBody MafiaRole mafiaRole) {
 		Map<String, Object> responseBody = new HashMap<String, Object>();
