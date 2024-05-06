@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocket
 @EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -32,5 +32,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 		// 메시지를 발행하는 요청 url = > 메시지 보낼 때
 		registry.setApplicationDestinationPrefixes("/pub");
 	}
+	
 	
 }
