@@ -203,7 +203,7 @@ public class MafiaService implements MafiaMapper{
 	
 	// [방 퇴장] master 조회
 	@Override
-	public Integer getMaster(SetRoom setRoom) {
+	public int getMaster(SetRoom setRoom) {
 		return mafiaMapper.getMaster(setRoom);
 	}
 	
