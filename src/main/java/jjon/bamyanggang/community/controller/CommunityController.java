@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -50,7 +51,7 @@ public class CommunityController {
 //	    System.out.println("filename : "+filename);
 //	    System.out.println("size :" + size);
 //		System.out.println("Path :" + path);
-	    
+//	    
 		int result = 0;
 //		String newfilename="";
 //		
@@ -112,16 +113,11 @@ public class CommunityController {
 	
 	
 	//자게 글 수정(로그인확인) 
-//	@PutMapping("/communityupdate/{postNo}")
 	@PostMapping("/communityupdate/{postNo}")
 	public ResponseEntity<Integer> communityupdate(@RequestBody CommunityDto community,
-												   @PathVariable("postNo") int postNo
-													//@RequestPart(value = "imgfile", required = false) MultipartFile file
+													@PathVariable("postNo") int postNo
+//													@RequestPart(value = "imgfile", required = false) MultipartFile file
 												   )throws Exception {
-		community.setPostNo(postNo);
-		System.out.println("postNo:"+postNo);
-		System.out.println("title:"+ community.getTitle());
-		System.out.println("content:"+ community.getContent());
 //		System.out.println("수정컨트롤러");
 //		String filename = null;
 //		int size = 0;
@@ -169,17 +165,18 @@ public class CommunityController {
 //		}
 //		
 //		community.setImg(newfilename);
+		community.setPostNo(postNo);
 		result = communityService.communityUpdate(community);	
-//		System.out.println("community:"+ community);
-//		
+		System.out.println("community:"+ community);
+		
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	//자게 글 삭제(로그인확인)
 	@DeleteMapping("/communitydelete/{postNo}")
-	public ResponseEntity<Integer> communitydelsete(@RequestBody CommunityDto community)throws Exception{
+	public ResponseEntity<Integer> communitydelete(@PathVariable("postNo") int postNo)throws Exception{
 		System.out.println("삭제 들어옴");
-		int result = communityService.communityDelete(community.getPostNo());
+		int result = communityService.communityDelete(postNo);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 		//1 리턴 성공 , 0은 실패?
 	}
