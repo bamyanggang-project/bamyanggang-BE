@@ -103,7 +103,7 @@ public class MafiaService implements MafiaMapper{
 				// [방 퇴장] master update
 				masterUdt(setRoom);
 				
-			} else if (getJoinCnt == 1) { // 참여 인원이 1명 이하라면
+			} else if (getJoinCnt == 1) { // 참여 인원이 1명이라면
 				// [방 퇴장] mafia_role delete
 				delUser(setRoom);
 				// [방 퇴장] mafia_room delete
@@ -111,13 +111,10 @@ public class MafiaService implements MafiaMapper{
 				
 			}
 		} else { // 방장이 아니라면
-			// 참여 인원이 2명 이상이라면 
-			if (getJoinCnt >= 2) {
 				// [방 퇴장] mafia_role delete
 				delUser(setRoom);
 				// [방 퇴장] - join_cnt
 				joinCntMinus(setRoom);
-			}
 		}
 	}
 

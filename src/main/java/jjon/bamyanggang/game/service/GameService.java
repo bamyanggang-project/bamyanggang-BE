@@ -22,6 +22,7 @@ public class GameService implements GameMapper{
 
 	// [게임시작 버튼] is_on_game 조회
 	@Override
+	@Transactional
 	public int getIsOnGame(int roomNo) {
 		System.out.println("[게임시작 버튼] Service 시작!");
 		// [게임시작 버튼] 게임 중 상태로 변경
