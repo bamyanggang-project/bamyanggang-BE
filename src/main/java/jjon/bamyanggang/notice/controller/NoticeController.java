@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jjon.bamyanggang.model.NoticeDto;
-import jjon.bamyanggang.notice.service.NoticeServiceImpl;
+import jjon.bamyanggang.notice.service.NoticeService;
 
 @RestController
 @RequestMapping("/notice")
 public class NoticeController {
 	
 	@Autowired
-	private NoticeServiceImpl noticeService;
+	private NoticeService noticeService;
 	
 	//공지사항 목록
 	@GetMapping("/noticelist")

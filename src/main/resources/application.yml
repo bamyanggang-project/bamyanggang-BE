@@ -5,10 +5,10 @@ spring:
   
 #db-mysql
  datasource:
-      url: jdbc:mysql://localhost:3306/token
+      url: jdbc:mysql://localhost:3306/jsptest
       driver-class-name: com.mysql.cj.jdbc.Driver
-      username: weather
-      password: 1234
+      username: jspid
+      password: jsppass
 
 
  servlet:
