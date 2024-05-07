@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -34,7 +33,7 @@ public class CommunityController {
 	private ReplyService replyService;
 	
 	//자게 글쓰기
-	@PostMapping("/communitywrite")					//test시 : ModelAttribute : 동기적
+	@PostMapping("/communitywrite")					
 	public ResponseEntity<Integer> communitywrite(@RequestBody CommunityDto community
 												  //@RequestPart(value = "imgfile", required = false) MultipartFile file
 												  )throws Exception{
@@ -51,7 +50,7 @@ public class CommunityController {
 //	    System.out.println("filename : "+filename);
 //	    System.out.println("size :" + size);
 //		System.out.println("Path :" + path);
-//	    
+	    
 		int result = 0;
 //		String newfilename="";
 //		
@@ -113,69 +112,73 @@ public class CommunityController {
 	
 	
 	//자게 글 수정(로그인확인) 
-	@PutMapping("/communityupdate/{postNo}")
+//	@PutMapping("/communityupdate/{postNo}")
+	@PostMapping("/communityupdate/{postNo}")
 	public ResponseEntity<Integer> communityupdate(@RequestBody CommunityDto community,
-													@RequestPart(value = "imgfile", required = false) MultipartFile file
+												   @PathVariable("postNo") int postNo
+													//@RequestPart(value = "imgfile", required = false) MultipartFile file
 												   )throws Exception {
-		System.out.println("수정컨트롤러");
-		String filename = null;
-		int size = 0;
-		String newfilename="";
+		community.setPostNo(postNo);
+		System.out.println("postNo:"+postNo);
+		System.out.println("title:"+ community.getTitle());
+		System.out.println("content:"+ community.getContent());
+//		System.out.println("수정컨트롤러");
+//		String filename = null;
+//		int size = 0;
+//		String newfilename="";
 		int result=0;
 		
-		if(file != null && !file.isEmpty()) { //첨부파일 전송된 경우
-			
-			filename = file.getOriginalFilename();
-			size =(int) file.getSize();
-			
-			String path = "C:/upload";//파일 저장경로
-			
-			
-			//중복문제 해결
-			String extension = filename.substring(filename.lastIndexOf("."), filename.length());
-			System.out.println(extension);
-			
-			UUID uuid = UUID.randomUUID();
-			newfilename = uuid.toString() + extension;
-			
-			System.out.println("newfilename : "+ newfilename);
-			
-			if(size > 100000) { //100kb
-				result = 2;
-				return new ResponseEntity<>(result,HttpStatus.OK);
-				
-			}else if(!extension.equals(".jpg") &&
-					 !extension.equals(".jpeg") &&
-					 !extension.equals(".gif") &&
-					 !extension.equals(".png")) {
-				
-				result	=3;
-				return new ResponseEntity<>(result,HttpStatus.OK);
-			}
-			//파일 저장
-			file.transferTo(new File(path+"/"+newfilename));
-			
-		}
-		
-		if(newfilename.isEmpty()) { //첨부파일 수정 x
-			//기존파일명 가져오기
-			CommunityDto existingCommunity = communityService.getCommunity(community.getPostNo());
-			newfilename = existingCommunity.getImg();
-		}
-		
-		community.setImg(newfilename);
+//		if(file != null && !file.isEmpty()) { //첨부파일 전송된 경우
+//			
+//			filename = file.getOriginalFilename();
+//			size =(int) file.getSize();
+//			
+//			String path = "C:/upload";//파일 저장경로
+//			
+//			
+//			//중복문제 해결
+//			String extension = filename.substring(filename.lastIndexOf("."), filename.length());
+//			System.out.println(extension);
+//			
+//			UUID uuid = UUID.randomUUID();
+//			newfilename = uuid.toString() + extension;
+//			
+//			System.out.println("newfilename : "+ newfilename);
+//			
+//			if(size > 100000) { //100kb
+//				result = 2;
+//				return new ResponseEntity<>(result,HttpStatus.OK);
+//				
+//			}else if(!extension.equals(".jpg") &&
+//					 !extension.equals(".jpeg") &&
+//					 !extension.equals(".gif") &&
+//					 !extension.equals(".png")) {
+//				
+//				result	=3;
+//				return new ResponseEntity<>(result,HttpStatus.OK);
+//			}
+//			//파일 저장
+//			file.transferTo(new File(path+"/"+newfilename));
+//			
+//		}
+//		
+//		if(newfilename.isEmpty()) { //첨부파일 수정 x
+//			//기존파일명 가져오기
+//			CommunityDto existingCommunity = communityService.getCommunity(community.getPostNo());
+//			newfilename = existingCommunity.getImg();
+//		}
+//		
+//		community.setImg(newfilename);
 		result = communityService.communityUpdate(community);	
-		System.out.println("community:"+ community);
-		
+//		System.out.println("community:"+ community);
+//		
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
 	//자게 글 삭제(로그인확인)
 	@DeleteMapping("/communitydelete/{postNo}")
-	public ResponseEntity<Integer> communitydelete(@RequestBody CommunityDto community)throws Exception{
-//	public ResponseEntity<Integer> communitydelete(@PathVariable("postNo") int postNo)throws Exception{
+	public ResponseEntity<Integer> communitydelsete(@RequestBody CommunityDto community)throws Exception{
 		System.out.println("삭제 들어옴");
-//		int result = communityService.communityDelete(postNo);
 		int result = communityService.communityDelete(community.getPostNo());
 		return new ResponseEntity<>(result,HttpStatus.OK);
 		//1 리턴 성공 , 0은 실패?
