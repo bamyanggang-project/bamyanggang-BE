@@ -19,6 +19,19 @@ public class GameService implements GameMapper{
 	
 	@Autowired
 	private GameMapper gameMapper;
+
+	// [게임시작 버튼] is_on_game 조회
+	@Override
+	@Transactional
+	public int getIsOnGame(int roomNo) {
+		System.out.println("[게임시작 버튼] Service 시작!");
+		// [게임시작 버튼] 게임 중 상태로 변경
+		udtIsOnGame(roomNo);
+		int getIsOnGame = gameMapper.getIsOnGame(roomNo);
+		System.out.println("getIsOnGame : " + getIsOnGame);
+		
+		return getIsOnGame;
+	}
 	
 	// [게임시작]
 	@Transactional
@@ -151,6 +164,11 @@ public class GameService implements GameMapper{
 		}
 	}
 	
+	// [게임시작 버튼] 게임 중 상태로 변경
+	@Override
+	public void udtIsOnGame(int roomNo) {
+		gameMapper.udtIsOnGame(roomNo);
+	}
 	// [게임시작] mafia_role 조회
 	@Override
 	public List<RoomUserInfo> getUserInfo(int roomNo) {
@@ -228,5 +246,6 @@ public class GameService implements GameMapper{
 	public void delRoom(MafiaRole mafiaRole) {
 		gameMapper.delRoom(mafiaRole);
 	}
+
 	
 }

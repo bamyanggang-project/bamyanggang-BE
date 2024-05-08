@@ -12,7 +12,7 @@
 
 <!-- 게시판 목록 -->
 <select id="getCommunityList" resultType="community">
-	select * from community order by 
+	select * from community order by post_no=#{postNo}
 </select>
 
 <!-- 게시판 상세보기 -->

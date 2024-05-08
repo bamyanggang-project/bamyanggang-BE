@@ -10,12 +10,6 @@
 </select>
 
 <insert id="replyInsert" parameterType="reply">
-    <!-- 해당 게시물의 댓글 중 가장 큰 reply_no 값 가져오기 -->
-    <selectKey resultType="int" keyProperty="replyNo" order="BEFORE">
-        select coalesce(max(reply_no), 0) + 1 as replyNo
-        from community_reply
-        where post_no = #{postNo}
-    </selectKey>
     
     <!-- 댓글 삽입 -->
     insert into community_reply (post_no, reply_no, user_id, content, wrtn_date)

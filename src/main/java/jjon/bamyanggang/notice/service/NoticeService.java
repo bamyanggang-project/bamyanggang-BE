@@ -9,7 +9,7 @@ import jjon.bamyanggang.model.NoticeDto;
 import jjon.bamyanggang.notice.mapper.NoticeDao;
 
 @Service
-public class NoticeServiceImpl{
+public class NoticeService{
 
 	@Autowired
 	private NoticeDao noticeDao;

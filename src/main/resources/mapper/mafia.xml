@@ -54,7 +54,7 @@
 	
 	<!-- [방 대기]  방 정보 조회-->
 	<select id = "getRoomInfo" parameterType = "int" resultType = "mafia_room">
-		select room_nm, room_cd, join_cnt from mafia_room 
+		select room_nm, room_cd, join_cnt, is_on_game from mafia_room 
 		where room_no = #{roomNo}
 	</select>
 	

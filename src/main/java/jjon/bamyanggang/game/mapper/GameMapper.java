@@ -11,6 +11,12 @@ import jjon.bamyanggang.model.RoomUserInfo;
 @Mapper
 public interface GameMapper {
 	
+	// [게임시작 버튼] 게임 중 상태로 변경
+	public void udtIsOnGame(int roomNo);
+	
+	// [게임시작 버튼] is_on_game 조회
+	public int getIsOnGame(int roomNo);
+	
 	// [게임시작] mafia_role 조회
 	public List<RoomUserInfo> getUserInfo(int roomNo);
 	
