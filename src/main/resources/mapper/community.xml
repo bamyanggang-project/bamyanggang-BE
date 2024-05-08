@@ -12,7 +12,7 @@
 
 <!-- 게시판 목록 -->
 <select id="getCommunityList" resultType="community">
-	select * from community where is_deleted = 0 order by post_no=#{postNo}
+	select * from community where is_deleted = 0 order by post_no desc
 </select>
 
 <!-- 게시판 상세보기 -->
