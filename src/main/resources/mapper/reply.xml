@@ -22,7 +22,7 @@
 </update>
 
 <!-- 댓글삭제 -->
-<update id="replyDelete" parameterType="reply">
+<update id="replyDelete" parameterType="int">
 	update community_reply set is_deleted = 1 where post_no = #{postNo} and reply_no=#{replyNo}
 </update>
 

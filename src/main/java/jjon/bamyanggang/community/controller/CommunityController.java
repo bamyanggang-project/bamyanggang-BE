@@ -30,8 +30,6 @@ public class CommunityController {
 	@Autowired
 	private CommunityService communityService;
 	
-	@Autowired
-	private ReplyService replyService;
 	
 	//자게 글쓰기
 	@PostMapping("/communitywrite")					
@@ -108,6 +106,7 @@ public class CommunityController {
 		communityService.updateVw(postNo); //조회수 1증가
 		CommunityDto community = communityService.getCommunity(postNo);// 상세내용 구하기
 	
+		
 		//이전글의 postNo가져오기
 		int prevPostNo = communityService.getPrevPostNo(postNo);
 		//이전글 없을 경우 0으로 설정
@@ -116,7 +115,8 @@ public class CommunityController {
 		}else {
 			community.setPrevPostNo(prevPostNo);
 		}
-		
+
+
 		//다음글의 postNO가져오기
 		int nextPostNo = communityService.getNextPostNo(postNo);
 		//다음글이 없을 경우 0으로 설정

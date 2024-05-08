@@ -35,6 +35,7 @@ public class NoticeController {
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
+
 	//상세페이지(조회수 1증가 + 상세내용)
 	@GetMapping("/noticecontent/{postNo}")
 	public ResponseEntity<Map<String, Object>> noticecontent(@PathVariable("postNo") int postNo){
@@ -49,4 +50,5 @@ public class NoticeController {
 		
 	}
 
+	
 }
