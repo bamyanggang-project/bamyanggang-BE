@@ -12,12 +12,24 @@
 
 <!-- 게시판 목록 -->
 <select id="getCommunityList" resultType="community">
-	select * from community order by post_no=#{postNo}
+	select * from community where is_deleted = 0 order by post_no=#{postNo}
 </select>
 
 <!-- 게시판 상세보기 -->
 <select id="getCommunity" parameterType="int" resultType="community">
 	select * from community where post_no=#{postNo}
+</select>
+
+<!-- 유효한 이전글 번호 가져오기  < : &lt; -->
+<select id="getPrevPostNo" resultType="int" parameterType="int">
+	select max(post_no) from community
+	where post_no &lt; #{postNo} and is_deleted = 0
+</select>
+
+<!-- 유효한 다음글 번호 가져오기  > : &gt; -->
+<select id="getNextPostNo" resultType="int" parameterType="int">
+	select min(post_no) from community
+	where post_no &gt; #{postNo} and is_deleted = 0
 </select>
 
 <!-- 조회수 증가 -->
@@ -32,9 +44,9 @@
 </update>
 
 <!-- 게시판 삭제 -->
-<delete id="communityDelete" parameterType="int">
-	delete from community where post_no = #{postNo}
-</delete>
+<update id="communityDelete" parameterType="int">
+	update community set is_deleted = 1 where post_no = #{postNo}
+</update>
 
 
 </mapper>

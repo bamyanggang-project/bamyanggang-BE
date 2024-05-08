@@ -17,4 +17,6 @@ public class CommunityDto {
 	private String img;      //이미지
 	private int vwCnt;       //조회수
 	private Date wrtnDate;   //등록날짜
+	private int prevPostNo;  // 이전글 번호
+	private int nextPostNo;  //다음글 번호
 }

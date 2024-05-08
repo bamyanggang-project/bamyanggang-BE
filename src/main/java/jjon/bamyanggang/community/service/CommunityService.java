@@ -44,5 +44,14 @@ public class CommunityService implements CommunityDao {
 		return CommunityDao.communityDelete(postNo);
 	}
 
+	//이전 글 번호 가져오기
+	public int getPrevPostNo(int postNo) throws Exception {
+		return CommunityDao.getPrevPostNo(postNo);
+	}
+	//다음 글 번 호 가져오기
+	public int getNextPostNo(int postNo) throws Exception{
+		return CommunityDao.getNextPostNo(postNo);
+	}
+
 
 }
