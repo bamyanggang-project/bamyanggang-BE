@@ -6,7 +6,7 @@
 
 <!-- 댓글 목록 -->
 <select id="getReplyList" parameterType="int" resultType="reply">
-	select * from community_reply where post_no=#{postNo} order by reply_no
+	select * from community_reply where post_no=#{postNo} and is_deleted = 0 order by reply_no
 </select>
 
 <!-- 댓글 작성 -->
