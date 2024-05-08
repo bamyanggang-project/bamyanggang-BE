@@ -9,13 +9,11 @@
 	select * from community_reply where post_no=#{postNo} order by reply_no
 </select>
 
+<!-- 댓글 작성 -->
 <insert id="replyInsert" parameterType="reply">
-    
-    <!-- 댓글 삽입 -->
     insert into community_reply (post_no, reply_no, user_id, content, wrtn_date)
     values (#{postNo}, #{replyNo}, #{userId}, #{content}, CURRENT_DATE)
 </insert>
-
 
 <!-- 댓글수정 -->
 <update id="replyUpdate" parameterType="reply">
@@ -24,10 +22,8 @@
 </update>
 
 <!-- 댓글삭제 -->
-<delete id="replyDelete" parameterType="reply">
-	delete from community_reply where post_no=#{postNo} and reply_no=#{replyNo}
-</delete>
-
-
+<update id="replyDelete" parameterType="reply">
+	update community_reply set is_deleted = 1 where post_no = #{postNo} and reply_no=#{replyNo}
+</update>
 
 </mapper>

@@ -68,7 +68,7 @@ public class ReplyContoller {
 
 	
 	//댓글삭제(로그인 확인, id 확인)
-	@DeleteMapping("/replydelete/{postNo}/{replyNo}")
+	@PostMapping("/replydelete/{postNo}/{replyNo}")
 	public ResponseEntity<Integer> replydelete(@RequestBody ReplyDto reply)throws Exception{
 		 int result = replyService.replyDelete(reply);
 		 return new ResponseEntity<>(result,HttpStatus.OK);
