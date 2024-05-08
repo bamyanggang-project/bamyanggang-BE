@@ -18,7 +18,7 @@
 		
 	<!-- [게임시작] mafia_role 조회 -->
 	<select id = "getUserInfo" 	parameterType = "int" resultType = "room_user_info">
-		select mr.role, m.user_id, m.user_nicknm from mafia_role mr
+		select mr.role, m.user_id, m.user_nicknm, mr.role_st from mafia_role mr
 		join member m on mr.user_id = m.user_id
 		where mr.room_no = #{roomNo}
    	</select>

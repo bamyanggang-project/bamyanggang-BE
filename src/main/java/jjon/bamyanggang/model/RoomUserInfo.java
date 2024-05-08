@@ -14,5 +14,6 @@ public class RoomUserInfo {
 	private String userId;
 	private String userNicknm;
 	private String userImg;
+	private int roleSt;
 	
 }
