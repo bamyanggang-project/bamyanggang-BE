@@ -19,7 +19,7 @@ public interface ReplyDao {
 	public int replyUpdate(ReplyDto reply)throws Exception;
 
 	//댓글삭제
-	public int replyDelete(ReplyDto reply)throws Exception;
+	public int replyDelete(int replyNo)throws Exception;
 	
 	
 }
