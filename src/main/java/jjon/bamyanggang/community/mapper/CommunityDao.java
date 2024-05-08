@@ -27,6 +27,12 @@ public interface CommunityDao {
 	//게시글 삭제
 	public int communityDelete(int postNo)throws Exception;
 
+	//이전 글 번호 가져오기
+	public int getPrevPostNo(int postNo)throws Exception;
+
+	//다음 글 번호 가져오기
+	public int getNextPostNo(int postNo)throws Exception;
+
 
 
 

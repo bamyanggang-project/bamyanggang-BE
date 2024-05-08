@@ -108,6 +108,24 @@ public class CommunityController {
 		communityService.updateVw(postNo); //조회수 1증가
 		CommunityDto community = communityService.getCommunity(postNo);// 상세내용 구하기
 	
+		//이전글의 postNo가져오기
+		int prevPostNo = communityService.getPrevPostNo(postNo);
+		//이전글 없을 경우 0으로 설정
+		if(prevPostNo == -1) {
+			community.setPrevPostNo(0);
+		}else {
+			community.setPrevPostNo(prevPostNo);
+		}
+		
+		//다음글의 postNO가져오기
+		int nextPostNo = communityService.getNextPostNo(postNo);
+		//다음글이 없을 경우 0으로 설정
+		if(nextPostNo == -1 ) {
+			community.setNextPostNo(0);
+		}else {
+			community.setNextPostNo(nextPostNo);
+		}
+		
 		return new ResponseEntity<>(community,HttpStatus.OK);
 	}
 	
@@ -173,12 +191,15 @@ public class CommunityController {
 	}
 	
 	//자게 글 삭제(로그인확인)
-	@DeleteMapping("/communitydelete/{postNo}")
+	@PostMapping("/communitydelete/{postNo}")
 	public ResponseEntity<Integer> communitydelete(@PathVariable("postNo") int postNo)throws Exception{
 		System.out.println("삭제 들어옴");
 		int result = communityService.communityDelete(postNo);
 		return new ResponseEntity<>(result,HttpStatus.OK);
 		//1 리턴 성공 , 0은 실패?
 	}
+	
+	
+	
 	
 }
