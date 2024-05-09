@@ -15,8 +15,8 @@ public class NoticeService{
 	private NoticeDao noticeDao;
 
 	//공지사항 리스트
-	public List<NoticeDto> getNoticeList() {
-		return noticeDao.getNoticeList();
+	public List<NoticeDto> getNoticeList(int start, int size) {
+		return noticeDao.getNoticeList(start, size);
 	}
 
 	//조회수 증가

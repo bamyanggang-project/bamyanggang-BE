@@ -10,7 +10,7 @@ import jjon.bamyanggang.model.NoticeDto;
 public interface NoticeDao {
 
 	//공지사항 목록
-	public List<NoticeDto> getNoticeList();
+	public List<NoticeDto> getNoticeList(int start, int size);
 
 	//조회수 증가
 	public void updateVw(int postNo);
