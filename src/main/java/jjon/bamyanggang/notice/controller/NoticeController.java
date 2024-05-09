@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jjon.bamyanggang.model.NoticeDto;
@@ -24,15 +25,30 @@ public class NoticeController {
 	
 	//공지사항 목록
 	@GetMapping("/noticelist")
-	public ResponseEntity<Map<String, Object>> noticelist(){
+	public ResponseEntity<Map<String, Object>> noticelist(
+			@RequestParam(value="page", defaultValue = "1") int page,
+			@RequestParam(value="size" ,defaultValue = "10") int size){
+		
+		System.out.println("page : "+ page);
+		System.out.println("size : "+ size);
+		
+		int start = (page - 1) * size;
+		
+		//dao는 parameta를 2개를 받지 못하기에 map 으로 묶어서 전달
+		Map m = new HashMap<>();
+		m.put("start", start);
+		m.put("size", size);
 		
 		
-		List<NoticeDto> noticeList = noticeService.getNoticeList();
-		System.out.println("글목록 불러오기"+noticeList);
+		//페이지 번호, 크기 받아서 해당 페이지의 공지사항 리스트 가져오기
+		List<NoticeDto> noticeList = noticeService.getNoticeList(m);
+		System.out.println("페이지 : "+ page +" 글목록 :" + noticeList);
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("notices", noticeList);
+		map.put("page", page);
+		map.put("size", size);
 		
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
