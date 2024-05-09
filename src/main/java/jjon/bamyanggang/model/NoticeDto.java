@@ -14,5 +14,7 @@ public class NoticeDto {
 	private String title;
 	private String content;
 	private int vwCnt;
-	private Date wrtnDate;
+	private Date wrtnDate;   
+	private int prevPostNo;  // 이전글 번호
+	private int nextPostNo;  //다음글 번호
 }

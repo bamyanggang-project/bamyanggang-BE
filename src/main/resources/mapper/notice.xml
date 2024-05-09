@@ -19,4 +19,17 @@
 	select * from notice where post_no = #{postNo}
 </select>
 
+<!-- 유효한 이전글 번호 가져오기  < : &lt; -->
+<select id="getPrevPostNo" resultType="int" parameterType="int">
+	select coalesce(max(post_no), -1) from notice
+	where post_no &lt; #{postNo} 
+</select>
+
+<!-- 유효한 다음글 번호 가져오기  > : &gt; -->
+<select id="getNextPostNo" resultType="int" parameterType="int">
+	select coalesce(min(post_no), -1) from notice
+	where post_no &gt; #{postNo}
+</select>
+
+
 </mapper>

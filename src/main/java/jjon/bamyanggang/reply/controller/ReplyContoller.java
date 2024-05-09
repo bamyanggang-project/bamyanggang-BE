@@ -68,8 +68,10 @@ public class ReplyContoller {
 
 	
 	//댓글삭제(로그인 확인, id 확인)
-	@PostMapping("/replydelete/{replyNo}")
+	@DeleteMapping("/replydelete/{replyNo}")
 	public ResponseEntity<Integer> replydelete(@PathVariable("replyNo") int replyNo)throws Exception{
+		
+		 System.out.println("replyNo : "+replyNo);
 		 int result = replyService.replyDelete(replyNo);
 		 return new ResponseEntity<>(result,HttpStatus.OK);
 	}

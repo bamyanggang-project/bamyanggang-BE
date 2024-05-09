@@ -23,7 +23,7 @@
 
 <!-- 댓글삭제 -->
 <update id="replyDelete" parameterType="int">
-	update community_reply set is_deleted = 1 where post_no = #{postNo} and reply_no=#{replyNo}
+	update community_reply set is_deleted = 1 where reply_no=#{replyNo}
 </update>
 
 </mapper>
