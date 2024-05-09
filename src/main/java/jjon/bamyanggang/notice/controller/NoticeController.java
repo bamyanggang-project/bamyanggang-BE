@@ -61,6 +61,8 @@ public class NoticeController {
 		noticeService.updateVw(postNo); // 조회수 1 증가
 		NoticeDto notice = noticeService.getNotice(postNo); // 상세내용 구하기
 		
+		System.out.println("postNo : "+ postNo);
+		
 		//이전글 postNo 가져오기
 		int prevPostNo = noticeService.getPrevPostNo(postNo);
 		//이전글 없을 경우 0으로 설정
