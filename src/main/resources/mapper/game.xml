@@ -15,6 +15,18 @@
 		select is_on_game from mafia_room
 		where room_no = #{roomNo}
 	</select>
+	
+	<!-- [게임시작 버튼] 기준시간 저장 -->
+	<update id = "setTime" parameterType = "int">
+		update mafia_room set start_time = current_timestamp()
+		where room_no = #{roomNo}
+	</update>
+	
+	<!-- [게임시작] mafia_vote 중복 확인 -->
+	<select id = "cntRoomNoExists" parameterType = "int" resultType = "int">
+		select count(*) from mafia_vote
+		where room_no = #{roomNo}
+	</select>
 		
 	<!-- [게임시작] mafia_role 조회 -->
 	<select id = "getUserInfo" 	parameterType = "int" resultType = "room_user_info">
@@ -35,6 +47,12 @@
 		select room_no, user_id from mafia_role mr
 		where mr.room_no = #{roomNo}
 	</insert>
+	
+	<!-- [게임시작] 기준시간 조회 -->
+	<select id = "getTime" parameterType = "int" resultType = "java.sql.Timestamp">
+		select start_time from mafia_room
+		where room_no = #{roomNo}
+	</select>
 	
 	<!-- [투표] -->
 	<update id = "votePlus" parameterType = "mafia_role">
