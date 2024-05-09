@@ -26,12 +26,14 @@ public class NoticeController {
 	@GetMapping("/noticelist")
 	public ResponseEntity<Map<String, Object>> noticelist(){
 		
+		
 		List<NoticeDto> noticeList = noticeService.getNoticeList();
 		System.out.println("글목록 불러오기"+noticeList);
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("notices", noticeList);
+		
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
