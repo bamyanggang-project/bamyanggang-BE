@@ -1,5 +1,6 @@
 package jjon.bamyanggang.game.mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,18 @@ import jjon.bamyanggang.model.RoomUserInfo;
 @Mapper
 public interface GameMapper {
 	
+	// [게임시작 버튼] 게임 중 상태로 변경
+	public void udtIsOnGame(int roomNo);
+	
+	// [게임시작 버튼] is_on_game 조회
+	public int getIsOnGame(int roomNo);
+	
+	// [게임시작 버튼] 기준시간 설정
+	public void setTime(int roomNo);
+
+	//	[게임시작] mafia_vote 중복 확인
+	public int cntRoomNoExists(int roomNo);
+	
 	// [게임시작] mafia_role 조회
 	public List<RoomUserInfo> getUserInfo(int roomNo);
 	
@@ -19,6 +32,9 @@ public interface GameMapper {
 	
 	// [게임시작] mafia_vote table 초기세팅
 	public void initVote(int roomNo);
+	
+	// [게임시작] 기준시간 조회
+	public Timestamp getTime(int roomNo);
 	
 	// [투표]
 	public void votePlus(MafiaRole mafiaRole);

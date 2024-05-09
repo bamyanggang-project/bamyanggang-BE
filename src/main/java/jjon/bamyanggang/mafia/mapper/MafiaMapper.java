@@ -42,7 +42,7 @@ public interface MafiaMapper {
 	public List<RoomUserInfo> getUserInfo(int roomNo);
 	
 	// [방 퇴장] master 조회
-	public Integer getMaster(SetRoom setRoom);
+	public int getMaster(SetRoom setRoom);
 	
 	// [방 퇴장] join_cnt 조회
 	public int getJoinCnt(SetRoom setRoom);
