@@ -18,4 +18,10 @@ public interface NoticeDao {
 	//공지 상세보기
 	public NoticeDto getNotice(int postNo);
 
+	//이전 글번호 불러오기
+	public int getPrevPostNo(int postNo);
+
+	//다음 글번호 불러오기
+	public int getNextPostNo(int postNo);
+
 }
