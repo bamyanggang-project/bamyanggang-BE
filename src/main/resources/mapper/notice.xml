@@ -5,7 +5,7 @@
 <mapper namespace="jjon.bamyanggang.notice.mapper.NoticeDao">
 
 <!-- 공지사항 목록 가져오기  -->
-<select id="getNoticeList" resultType="notice">
+<select id="getNoticeList" parameterType="Map" resultType="notice">
 	select * from notice order by post_no desc
     limit #{start}, #{size}
 </select>

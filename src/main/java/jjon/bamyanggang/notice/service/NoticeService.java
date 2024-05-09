@@ -1,6 +1,7 @@
 package jjon.bamyanggang.notice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ public class NoticeService{
 	private NoticeDao noticeDao;
 
 	//공지사항 리스트
-	public List<NoticeDto> getNoticeList(int start, int size) {
-		return noticeDao.getNoticeList(start, size);
+	public List<NoticeDto> getNoticeList(Map m) {
+		return noticeDao.getNoticeList(m);
 	}
 
 	//조회수 증가
