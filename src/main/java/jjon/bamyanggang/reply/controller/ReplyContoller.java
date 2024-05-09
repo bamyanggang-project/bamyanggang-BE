@@ -21,7 +21,7 @@ import jjon.bamyanggang.model.ReplyDto;
 import jjon.bamyanggang.reply.service.ReplyService;
 
 @RestController
-@RequestMapping("/reply")
+@RequestMapping("api/reply")
 public class ReplyContoller {
 
 	@Autowired
@@ -65,7 +65,6 @@ public class ReplyContoller {
 		int result = replyService.replyUpdate(reply);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
-
 	
 	//댓글삭제(로그인 확인, id 확인)
 	@DeleteMapping("/replydelete/{replyNo}")
