@@ -1,6 +1,7 @@
 package jjon.bamyanggang.notice.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +11,7 @@ import jjon.bamyanggang.model.NoticeDto;
 public interface NoticeDao {
 
 	//공지사항 목록
-	public List<NoticeDto> getNoticeList();
+	public List<NoticeDto> getNoticeList(Map m);
 
 	//조회수 증가
 	public void updateVw(int postNo);
