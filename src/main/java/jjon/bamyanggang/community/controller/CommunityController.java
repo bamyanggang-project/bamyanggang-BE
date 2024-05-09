@@ -53,7 +53,7 @@ public class CommunityController {
 		int result = 0;
 		String newfilename="";
 		
-		if(file != null && !file.isEmpty()) { //첨부파일 전송된 경우
+		if(size>0) { //첨부파일 전송된 경우
 			
 			//파일중복문제
 			String extension = filename.substring(filename.lastIndexOf("."), filename.length()); //확장자 파싱
@@ -83,7 +83,7 @@ public class CommunityController {
 		
 
 		
-//			community.setImg(newfilename);
+			community.setImg(newfilename);
 			result = communityService.communityInsert(community);//insert되면 result==1 리턴
 			
 			return new ResponseEntity<>(result, HttpStatus.OK);//성공하면 1리턴
@@ -142,7 +142,7 @@ public class CommunityController {
 		String newfilename="";
 		int result=0;
 		
-		if(file != null && !file.isEmpty()) { //첨부파일 전송된 경우
+		if(size>0) { //첨부파일 전송된 경우
 			
 			filename = file.getOriginalFilename();
 			size =(int) file.getSize();
