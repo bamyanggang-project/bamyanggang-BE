@@ -26,7 +26,7 @@ public class MemberController {
 	
 	  private final MemberService memberService;
 	  
-	  @PostMapping("/api/addmember")
+	  @PostMapping("/addmember")
 	  public ResponseEntity<String> addMember(@RequestBody MemberDto memberDto) {
 	        // 이미지 파일이 전송되었는지 확인
 		 
@@ -39,7 +39,7 @@ public class MemberController {
 	        }
 	    }
 	  
-	  @PostMapping("/api/addmember/image")
+	  @PostMapping("/addmember/image")
 	  public String addMemberImage(@RequestPart("profileImage") MultipartFile profileImage)
 	  {
 	      
@@ -56,7 +56,7 @@ public class MemberController {
 	     
 	  }
 	  
-	  @PutMapping("/api/update/{userId}")
+	  @PutMapping("/update/{userId}")
 	  public ResponseEntity<String> updateMember(@PathVariable("userId") String userId, @RequestBody MemberDto memberDto) {
 		  memberDto.setUserId(userId);
 		  //memberDto.setUserId(memberDto.getUserId());
@@ -73,7 +73,7 @@ public class MemberController {
 	  
 	  
 		  
-		  @DeleteMapping("/api/deletemember")
+		  @DeleteMapping("/deletemember")
 		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
 			  
 			  boolean succes = memberService.deleteMember(memberDto);
@@ -84,7 +84,7 @@ public class MemberController {
 			  
 		  }
 		  
-			  @GetMapping("/api/userInfo/{userId}")
+			  @GetMapping("/userInfo/{userId}")
 			    public MemberDto getUserByUserId(@PathVariable("userId") String userId) {
 			      MemberDto memberDto =  memberService.getUserByUserId(userId);
 			      
@@ -94,7 +94,7 @@ public class MemberController {
 			    }
 	  
 	// 중복 확인을 위한 엔드포인트 추가
-      @PostMapping("/api/checkIdAvailability/idCheck")
+      @PostMapping("/checkIdAvailability/idCheck")
       public Integer checkIdAvailability(@RequestBody String userId) {
     	  int availability = memberService.isIdAvailable(userId);
     	    System.out.println(availability);
@@ -103,7 +103,7 @@ public class MemberController {
     	    
       }
 
-      @PostMapping("/api/checkIdAvailability/nickNameCheck")
+      @PostMapping("/checkIdAvailability/nickNameCheck")
       public Integer checkNickAvailability(@RequestBody String nickName) {
     	  int availability = memberService.isNickNameAvailable(nickName);
     	    System.out.println(availability);
@@ -112,7 +112,7 @@ public class MemberController {
     	    
       }
 
-      @PostMapping("/api/checkIdAvailability/emailCheck")
+      @PostMapping("/checkIdAvailability/emailCheck")
       public Integer checkEmailAvailability(@RequestBody String emailNum1) {
     	  int availability = memberService.isEmailAvailable(emailNum1);
     	    System.out.println(availability);
@@ -120,7 +120,7 @@ public class MemberController {
     	    return availability;
     	    
       }
-      @PostMapping("/api/checkIdAvailability/phoneNumCheck")
+      @PostMapping("/checkIdAvailability/phoneNumCheck")
       public Integer checkPhoneAvailability(@RequestBody List<String> phoneNumbers) {
           String phoneNum1 = phoneNumbers.get(0);
           String phoneNum2 = phoneNumbers.get(1);

@@ -24,7 +24,7 @@ import jjon.bamyanggang.reply.service.ReplyService;
 
 
 @RestController
-@RequestMapping("api/community")
+@RequestMapping("/community")
 public class CommunityController {
 	
 	@Autowired
@@ -97,7 +97,7 @@ public class CommunityController {
 	}
 	
 	//자게 글 삭제(로그인확인)
-	@PostMapping("/communitydelete/{postNo}")
+	@DeleteMapping("/communitydelete/{postNo}")
 	public ResponseEntity<Integer> communitydelete(@PathVariable("postNo") int postNo)throws Exception{
 		System.out.println("삭제 들어옴");
 		int result = communityService.communityDelete(postNo);
