@@ -21,7 +21,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jjon.bamyanggang.login.entity.RefreshEntity;
-import jjon.bamyanggang.login.entity.UserEntity;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
@@ -29,7 +28,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final AuthenticationManager authenticationManager;
 	
 	private final JwtUtil jwtUtil;
-	private RefreshRepository refreshRepository;
+	private final RefreshRepository refreshRepository;
 	
 	
 	public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository) 
@@ -38,6 +37,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
+		setFilterProcessesUrl("/api/login");
+		// 배포를 위한 api 로 url 변경
+		
 		
 	}
 	
@@ -86,9 +88,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    //응답 설정
 		    response.setHeader("access", access);
 		    response.addHeader("Authorization", access);
-		    response.addCookie(createCookie("refresh", refresh));
+		    response.addCookie(createCookie("refresh", refresh) ); // 수정
 		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
+		    
 			System.out.println("토큰 발급 성공 access : " + access + " refresh : " + refresh);
 		}
 		@Override
@@ -111,15 +114,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			refreshRepository.save(refreshEntity);
 		}
 		
-		private Cookie createCookie(String key, String value) {
+		private Cookie createCookie(String key, String value ) { // 수정
 			Cookie cookie = new Cookie(key, value);
 		    cookie.setMaxAge(24*60*60);
-		    //cookie.setSecure(true);
-		    //cookie.setPath("/");
+		    cookie.setSecure(true);
+		    cookie.setPath("/");
+		    cookie.setAttribute("SameSite", "None");
 		    cookie.setHttpOnly(true);
-
+		   
+		    
 		    return cookie;
 		}
 	
-	
+		
 }
