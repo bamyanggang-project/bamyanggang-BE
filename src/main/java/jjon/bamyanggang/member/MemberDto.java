@@ -24,8 +24,7 @@ public class MemberDto {
 	private String gender;
 	
 	private String userAuthority = "user";
-	private int withdrawal = 1; // 임의설정
-
+	private int withdrawal = 1; 
 
 
 

@@ -31,17 +31,15 @@ public class CommunityController {
 	private CommunityService communityService;
 	
 	
-	//자게 글쓰기
 	@PostMapping("/communitywrite")					
 	public ResponseEntity<Integer> communitywrite(@RequestBody CommunityDto community
 												  )throws Exception{
 	    
 		int result = 0;
-		result = communityService.communityInsert(community);//insert되면 result==1 리턴
-		return new ResponseEntity<>(result, HttpStatus.OK);//성공하면 1리턴
+		result = communityService.communityInsert(community);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	//자게 글 목록
 	@GetMapping("/communitylist")
 	public ResponseEntity<List<CommunityDto>> communitylist()throws Exception{
 		
@@ -51,17 +49,14 @@ public class CommunityController {
 	
 	
 	
-	//자게 글 상세보기 
 	@GetMapping("/communitycontent/{postNo}")
 	public ResponseEntity<CommunityDto>communitycontent(@PathVariable("postNo") int postNo)throws Exception{
 		
-		communityService.updateVw(postNo); //조회수 1증가
-		CommunityDto community = communityService.getCommunity(postNo);// 상세내용 구하기
+		communityService.updateVw(postNo); 
+		CommunityDto community = communityService.getCommunity(postNo);
 	
 		
-		//이전글의 postNo가져오기
 		int prevPostNo = communityService.getPrevPostNo(postNo);
-		//이전글 없을 경우 0으로 설정
 		if(prevPostNo == -1) {
 			community.setPrevPostNo(0);
 		}else {
@@ -69,9 +64,9 @@ public class CommunityController {
 		}
 
 
-		//다음글의 postNO가져오기
+	
 		int nextPostNo = communityService.getNextPostNo(postNo);
-		//다음글이 없을 경우 0으로 설정
+	
 		if(nextPostNo == -1 ) {
 			community.setNextPostNo(0);
 		}else {
@@ -82,7 +77,6 @@ public class CommunityController {
 	}
 	
 	
-	//자게 글 수정(로그인확인) 
 	@PostMapping("/communityupdate/{postNo}")
 	public ResponseEntity<Integer> communityupdate(@RequestBody CommunityDto community,
 													@PathVariable("postNo") int postNo
@@ -96,13 +90,11 @@ public class CommunityController {
 		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	
-	//자게 글 삭제(로그인확인)
 	@DeleteMapping("/communitydelete/{postNo}")
 	public ResponseEntity<Integer> communitydelete(@PathVariable("postNo") int postNo)throws Exception{
 		System.out.println("삭제 들어옴");
 		int result = communityService.communityDelete(postNo);
 		return new ResponseEntity<>(result,HttpStatus.OK);
-		//1 리턴 성공 , 0은 실패
 	}
 	
 	
