@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api")
+@RequestMapping("")
 public class MemberController {
 	
 	  private final MemberService memberService;
@@ -95,8 +95,8 @@ public class MemberController {
 			    }
 	  
 	// 중복 확인을 위한 엔드포인트 추가
-      @GetMapping("/checkIdAvailability/idCheck")
-      public Integer checkIdAvailability(@RequestParam String userId) {
+      @GetMapping("/api/checkIdAvailability/idCheck/{userId}")
+      public Integer checkIdAvailability(@PathVariable("userId") String userId) {
     	  int availability = memberService.isIdAvailable(userId);
     	    return availability;
     	    
