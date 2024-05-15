@@ -101,24 +101,23 @@ public class MemberController {
     	    
       }
 
-      @GetMapping("/api/checkIdAvailability/nickNameCheck")
-      public Integer checkNickAvailability(@RequestParam String nickName) {
+      @GetMapping("/api/checkIdAvailability/nickNameCheck/{nickName}")
+      public Integer checkNickAvailability(@PathVariable("nickName") String nickName) {
     	  int availability = memberService.isNickNameAvailable(nickName);
     	    return availability;
     	    
       }
 
-      @GetMapping("/api/checkIdAvailability/emailCheck")
-      public Integer checkEmailAvailability(@RequestParam String emailNum1) {
+      @GetMapping("/api/checkIdAvailability/emailCheck/{emailNum1}")
+      public Integer checkEmailAvailability(@PathVariable("emailNum1") String emailNum1) {
     	  int availability = memberService.isEmailAvailable(emailNum1);
     	    return availability;
     	    
       }
       @GetMapping("api/checkIdAvailability/phoneNumCheck")
-      public Integer checkPhoneAvailability(@RequestParam List<String> phoneNumbers) {
-          String phoneNum1 = phoneNumbers.get(0);
-          String phoneNum2 = phoneNumbers.get(1);
-          String phoneNum3 = phoneNumbers.get(2);
+      public Integer checkPhoneAvailability(@RequestParam("phoneNum1") String phoneNum1,
+              @RequestParam("phoneNum2") String phoneNum2,
+              @RequestParam("phoneNum3") String phoneNum3) {
           
           
           int availability = memberService.isPhoneNumAvailable(phoneNum1, phoneNum2, phoneNum3);
