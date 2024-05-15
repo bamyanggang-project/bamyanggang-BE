@@ -27,7 +27,7 @@ public class MemberController {
 	
 	  private final MemberService memberService;
 	  
-	  @PostMapping("/addmember")
+	  @PostMapping("/api/addmember")
 	  public ResponseEntity<String> addMember(@RequestBody MemberDto memberDto) {
 	        // 이미지 파일이 전송되었는지 확인
 		 
@@ -40,7 +40,7 @@ public class MemberController {
 	        }
 	    }
 	  
-	  @PostMapping("/addmember/image")
+	  @PostMapping("/api/addmember/image")
 	  public String addMemberImage(@RequestPart("profileImage") MultipartFile profileImage)
 	  {
 	      
@@ -57,10 +57,9 @@ public class MemberController {
 	     
 	  }
 	  
-	  @PutMapping("/update/{userId}")
+	  @PutMapping("/api/update/{userId}")
 	  public ResponseEntity<String> updateMember(@PathVariable("userId") String userId, @RequestBody MemberDto memberDto) {
 		  memberDto.setUserId(userId);
-		  //memberDto.setUserId(memberDto.getUserId());
 		 
 		  
 		  boolean success = memberService.updateMember(memberDto);
@@ -74,7 +73,7 @@ public class MemberController {
 	  
 	  
 		  
-		  @DeleteMapping("/deletemember")
+		  @DeleteMapping("/api/deletemember")
 		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
 			  
 			  boolean succes = memberService.deleteMember(memberDto);
@@ -85,7 +84,7 @@ public class MemberController {
 			  
 		  }
 		  
-			  @GetMapping("/userInfo/{userId}")
+			  @GetMapping("/api/userInfo/{userId}")
 			    public MemberDto getUserByUserId(@PathVariable("userId") String userId) {
 			      MemberDto memberDto =  memberService.getUserByUserId(userId);
 			      
@@ -102,20 +101,20 @@ public class MemberController {
     	    
       }
 
-      @GetMapping("/checkIdAvailability/nickNameCheck")
+      @GetMapping("/api/checkIdAvailability/nickNameCheck")
       public Integer checkNickAvailability(@RequestParam String nickName) {
     	  int availability = memberService.isNickNameAvailable(nickName);
     	    return availability;
     	    
       }
 
-      @GetMapping("/checkIdAvailability/emailCheck")
+      @GetMapping("/api/checkIdAvailability/emailCheck")
       public Integer checkEmailAvailability(@RequestParam String emailNum1) {
     	  int availability = memberService.isEmailAvailable(emailNum1);
     	    return availability;
     	    
       }
-      @GetMapping("/checkIdAvailability/phoneNumCheck")
+      @GetMapping("api/checkIdAvailability/phoneNumCheck")
       public Integer checkPhoneAvailability(@RequestParam List<String> phoneNumbers) {
           String phoneNum1 = phoneNumbers.get(0);
           String phoneNum2 = phoneNumbers.get(1);
