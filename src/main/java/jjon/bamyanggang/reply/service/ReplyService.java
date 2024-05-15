@@ -30,8 +30,8 @@ public class ReplyService {
 	}
 
 	//댓글삭제
-	public int replyDelete(ReplyDto reply)throws Exception {
-		return replyDao.replyDelete(reply);
+	public int replyDelete(int replyNo)throws Exception {
+		return replyDao.replyDelete(replyNo);
 	}
 
 }

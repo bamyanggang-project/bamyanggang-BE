@@ -1,5 +1,6 @@
 package jjon.bamyanggang.game.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,48 +20,74 @@ public class GameService implements GameMapper{
 	
 	@Autowired
 	private GameMapper gameMapper;
+
+	// [게임시작 버튼] is_on_game 조회
+	@Override
+	@Transactional
+	public int getIsOnGame(int roomNo) {
+		System.out.println("[게임시작 버튼] Service 시작!");
+		// [게임시작 버튼] 게임 중 상태로 변경
+		udtIsOnGame(roomNo);
+		// [게임시작 버튼] 기준시간 설정
+		setTime(roomNo);
+		int getIsOnGame = gameMapper.getIsOnGame(roomNo);
+		System.out.println("getIsOnGame : " + getIsOnGame);
+		
+		return getIsOnGame;
+	}
 	
 	// [게임시작]
 	@Transactional
 	public List<RoomUserInfo> gameStart(int roomNo) {
 		System.out.println("[게임시작] Service 시작!");
-		// [게임시작] mafia_role 조회 (role 변경 전)
-		List<RoomUserInfo> getUserInfo = getUserInfo(roomNo);
-		// 역할 목록 생성 (시민1~5, 마피아)
-		List<String> roleList = new ArrayList<String>();
-		for (int i = 1; i <= 5; i++) {
-			roleList.add("시민");
+		int cntRoomNoExists = cntRoomNoExists(roomNo);
+		System.out.println("중복방 개수 : " + cntRoomNoExists);
+		List<RoomUserInfo> getUserInfo = new ArrayList<RoomUserInfo>();
+		if (cntRoomNoExists == 0) {
+			// [게임시작] mafia_role 조회 (role 변경 전)
+			getUserInfo = getUserInfo(roomNo);
+			// 역할 목록 생성 (시민1~5, 마피아)
+			List<String> roleList = new ArrayList<String>();
+			for (int i = 1; i <= 5; i++) {
+				roleList.add("시민");
+			}
+			roleList.add("마피아");
+			// 랜덤 역할 부여
+			Collections.shuffle(roleList);
+			// 랜덤으로 부여됐는지 확인
+			System.out.println(roleList);
+			// roleList index
+			int roleListIdx = 0;
+			// [게임시작] 역할 부여 setParameter
+			Map<String, Object> setParameter = new HashMap<String, Object>();
+			for (RoomUserInfo roomUserInfo : getUserInfo) {
+				String role = roleList.get(roleListIdx);
+				System.out.println("role : " + role);
+				String userId = roomUserInfo.getUserId();
+				System.out.println("userId :" + userId);
+				setParameter.put("role", role);
+				setParameter.put("userId", userId);
+				// [게임시작] 역할 부여
+				setRole(setParameter);
+				// 6번 반복
+				roleListIdx++;
+			}
+			// [게임시작] mafia_vote table 초기세팅
+			initVote(roomNo);
+			// [게임시작] mafia_role 조회 (role 변경 후)
+			getUserInfo = getUserInfo(roomNo);
+			
+			return getUserInfo;
 		}
-		roleList.add("마피아");
-		// 랜덤 역할 부여
-		Collections.shuffle(roleList);
-		// 랜덤으로 부여됐는지 확인
-		System.out.println(roleList);
-		// roleList index
-		int roleListIdx = 0;
-		// [게임시작] 역할 부여 setParameter
-		Map<String, Object> setParameter = new HashMap<String, Object>();
-		for (RoomUserInfo roomUserInfo : getUserInfo) {
-			String role = roleList.get(roleListIdx);
-			System.out.println("role : " + role);
-			String userId = roomUserInfo.getUserId();
-			System.out.println("userId :" + userId);
-			setParameter.put("role", role);
-			setParameter.put("userId", userId);
-			// [게임시작] 역할 부여
-			setRole(setParameter);
-			// 6번 반복
-			roleListIdx++;
-		}
-		// [게임시작] mafia_vote table 초기세팅
-		initVote(roomNo);
-		System.out.println();
-		// [게임시작] mafia_role 조회 (role 변경 후)
-		getUserInfo = getUserInfo(roomNo);
-		
 		return getUserInfo;
 	}
 	
+	// [게임시작] 기준시간 조회
+	@Override
+	public Timestamp getTime(int roomNo) {
+		return gameMapper.getTime(roomNo);
+	}
+
 	// [투표]
 	@Override
 	public void votePlus(MafiaRole mafiaRole) {
@@ -97,7 +124,7 @@ public class GameService implements GameMapper{
 				resultVote.put("userNicknm", userNicknm);
 				// [인게임] 승패가 결정남
 				delVote(roomNo);
-				
+				System.out.println("왜1");
 				return resultVote;
 			} else {
 				// [인게임] die
@@ -120,7 +147,7 @@ public class GameService implements GameMapper{
 					resultVote.put("userNicknm", userNicknm);
 					// [인게임] 승패가 결정 안남
 					resetVote(roomNo);
-					
+					System.out.println("왜2");
 					return resultVote;
 				}
 			}
@@ -128,7 +155,7 @@ public class GameService implements GameMapper{
 			resultVote.put("result", 0);
 			// [인게임] 승패가 결정 안남
 			resetVote(roomNo);
-			
+			System.out.println("왜3");
 			return resultVote;
 		}
 	}
@@ -151,6 +178,24 @@ public class GameService implements GameMapper{
 		}
 	}
 	
+	// [게임시작 버튼] 게임 중 상태로 변경
+	@Override
+	public void udtIsOnGame(int roomNo) {
+		gameMapper.udtIsOnGame(roomNo);
+	}
+	
+	// [게임시작 버튼] 기준시간 세팅
+	@Override
+	public void setTime(int roomNo) {
+		gameMapper.setTime(roomNo);
+	}
+	
+	// 	[게임시작] mafia_vote 중복 확인
+	@Override
+	public int cntRoomNoExists(int roomNo) {
+		return gameMapper.cntRoomNoExists(roomNo);
+	}
+
 	// [게임시작] mafia_role 조회
 	@Override
 	public List<RoomUserInfo> getUserInfo(int roomNo) {
@@ -228,5 +273,6 @@ public class GameService implements GameMapper{
 	public void delRoom(MafiaRole mafiaRole) {
 		gameMapper.delRoom(mafiaRole);
 	}
+
 	
 }

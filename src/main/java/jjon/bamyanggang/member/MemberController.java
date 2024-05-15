@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 
 @RequiredArgsConstructor
@@ -84,7 +85,7 @@ public class MemberController {
 			  
 		  }
 		  
-			  @GetMapping("userInfo/{userId}")
+			  @GetMapping("/userInfo/{userId}")
 			    public MemberDto getUserByUserId(@PathVariable("userId") String userId) {
 			      MemberDto memberDto =  memberService.getUserByUserId(userId);
 			      
@@ -94,41 +95,35 @@ public class MemberController {
 			    }
 	  
 	// 중복 확인을 위한 엔드포인트 추가
-      @PostMapping("/checkIdAvailability/idCheck")
-      public Integer checkIdAvailability(@RequestBody String userId) {
+      @GetMapping("/api/checkIdAvailability/idCheck/{userId}")
+      public Integer checkIdAvailability(@PathVariable("userId") String userId) {
     	  int availability = memberService.isIdAvailable(userId);
-    	    System.out.println(availability);
-    	    System.out.println(userId);
     	    return availability;
     	    
       }
 
-      @PostMapping("/checkIdAvailability/nickNameCheck")
-      public Integer checkNickAvailability(@RequestBody String nickName) {
+      @GetMapping("/checkIdAvailability/nickNameCheck")
+      public Integer checkNickAvailability(@RequestParam String nickName) {
     	  int availability = memberService.isNickNameAvailable(nickName);
-    	    System.out.println(availability);
-    	    System.out.println(nickName);
     	    return availability;
     	    
       }
 
-      @PostMapping("/checkIdAvailability/emailCheck")
-      public Integer checkEmailAvailability(@RequestBody String emailNum1) {
+      @GetMapping("/checkIdAvailability/emailCheck")
+      public Integer checkEmailAvailability(@RequestParam String emailNum1) {
     	  int availability = memberService.isEmailAvailable(emailNum1);
-    	    System.out.println(availability);
-    	    System.out.println(emailNum1);
     	    return availability;
     	    
       }
-      @PostMapping("/checkIdAvailability/phoneNumCheck")
-      public Integer checkPhoneAvailability(@RequestBody List<String> phoneNumbers) {
+      @GetMapping("/checkIdAvailability/phoneNumCheck")
+      public Integer checkPhoneAvailability(@RequestParam List<String> phoneNumbers) {
           String phoneNum1 = phoneNumbers.get(0);
           String phoneNum2 = phoneNumbers.get(1);
           String phoneNum3 = phoneNumbers.get(2);
           
-          System.out.println("테스트번호 : " + phoneNum1 + phoneNum2 + phoneNum3);
+          
           int availability = memberService.isPhoneNumAvailable(phoneNum1, phoneNum2, phoneNum3);
-          System.out.println(availability);
+         
           return availability;
       }
 }

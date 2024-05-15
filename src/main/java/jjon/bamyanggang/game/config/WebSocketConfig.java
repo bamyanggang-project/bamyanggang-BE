@@ -9,27 +9,28 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 
 @Configuration
+// 스프링 웹소켓 활성화
 @EnableWebSocket
+// 메시지 브로커 활성화
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		// stomp 접속 주소 url => /ws-stomp
-		registry.addEndpoint("/ws-bamyanggang") // 연결될 엔드포인트
+		// WebSocket 서버 연결 엔드 포인트
+		registry.addEndpoint("/ws-bamyanggang")
+				// 모든 도메인 허용
 				.setAllowedOriginPatterns("*");
 	}
 	
-	// 메시지 브로커 설정
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		// enableSimpleBroker : 내장 메시지 브로커를 사용하기 위한 메소드
-		// prefix가 붙은 메시지를 발행할 경우, 메시지 브로커가 이를 처리한다.
-		// 메시지를 구독하는 요청 url => 메시지를 받을 때
+		// "/sub"가 붙은 발행된 메시지를 메시지 브로커가 처리해서 구독한 클라이언트에게 보내준다.
 		registry.enableSimpleBroker("/sub");
-		// 메시지 핸들러로 라우팅 되는 prefix를 파라미티로 지정할 수 있다.
-		// 메시지 가공 처리가 필요한 경우, 가공 핸들러로 메시지를 라우팅 되도록하는 설정
-		// 메시지를 발행하는 요청 url = > 메시지 보낼 때
+
+		// 메시지 가공처리를 위해, 가공 핸들러로 메시지를 라우팅 되도록 설정한다.
+		// "/pub"가 붙은 url 매핑 요청으로 라우팅
 		registry.setApplicationDestinationPrefixes("/pub");
 	}
 	

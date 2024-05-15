@@ -1,8 +1,10 @@
 package jjon.bamyanggang.login.service;
 
 import java.util.Date;
+import java.util.Enumeration;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +29,21 @@ public class ReissueService {
 
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         // get refresh token
+    	Enumeration<String> headerNames = request.getHeaderNames();
+    	while (headerNames.hasMoreElements()) {
+    	    String headerName = headerNames.nextElement();
+    	    String headerValue = request.getHeader(headerName);
+    	    System.out.println(headerName + ": " + headerValue);
+    	}
         String refresh = null;
         Cookie[] cookies = request.getCookies();
+        
+        
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("refresh")) {
+      
                 refresh = cookie.getValue();
+               
             }
         }
 
@@ -75,7 +87,7 @@ public class ReissueService {
         
         // response
         response.setHeader("access", newAccess);
-        response.addHeader("Authorization", newAccess);
+        response.addHeader("Authorization", newRefresh);
         	
         response.addCookie(createCookie("refresh", newRefresh));
         
@@ -94,8 +106,12 @@ public class ReissueService {
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24 * 60 * 60);
-        cookie.setHttpOnly(true);
-        return cookie;
+	    cookie.setSecure(true);
+	    //cookie.setPath("/");
+	    cookie.setAttribute("SameSite", "None");
+	    cookie.setHttpOnly(true);
+	    
+	    return cookie;
     }
 }
 

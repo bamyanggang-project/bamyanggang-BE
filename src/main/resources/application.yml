@@ -21,9 +21,6 @@ spring:
 
 
 
-#port
-server:
-  port: 80
 
 upload:
    directory: C:/project/bamyanggang/uploadimage

@@ -5,8 +5,9 @@
 <mapper namespace="jjon.bamyanggang.notice.mapper.NoticeDao">
 
 <!-- 공지사항 목록 가져오기  -->
-<select id="getNoticeList" resultType="notice">
-	select * from notice order by post_no desc;
+<select id="getNoticeList" parameterType="Map" resultType="notice">
+	select * from notice order by post_no desc
+    limit #{start}, #{size}
 </select>
 
 <!-- 조회수 증가 -->
@@ -18,5 +19,18 @@
 <select id="getNotice" parameterType="int" resultType="notice">
 	select * from notice where post_no = #{postNo}
 </select>
+
+<!-- 유효한 이전글 번호 가져오기  < : &lt; -->
+<select id="getPrevPostNo" resultType="int" parameterType="int">
+	select coalesce(max(post_no), -1) from notice
+	where post_no &lt; #{postNo} 
+</select>
+
+<!-- 유효한 다음글 번호 가져오기  > : &gt; -->
+<select id="getNextPostNo" resultType="int" parameterType="int">
+	select coalesce(min(post_no), -1) from notice
+	where post_no &gt; #{postNo}
+</select>
+
 
 </mapper>

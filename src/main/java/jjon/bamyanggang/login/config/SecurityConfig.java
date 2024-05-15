@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -55,8 +56,25 @@ public class SecurityConfig {
 	        return new BCryptPasswordEncoder();
 	    }
 	    
-	  
-	
+	    
+	    //url 변경 로직 추가public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+		
+		
+	   // public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+	    	
+//	    	
+//	    	@Override
+//	    	public void configure(HttpSecurity builder) throws Exception {           
+//	    	AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+//	    	LoginFilter jwtAuthenticationFilter =  new LoginFilter(authenticationManager, jwtUtil, refreshRepository);
+//	    	jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
+//	    	builder.addFilter(jwtAuthenticationFilter);
+//	    	
+//	    	}
+
+
+
+
 	   
 
 	    @Bean
@@ -76,8 +94,9 @@ public class SecurityConfig {
 	                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
 					configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
 					configuration.addExposedHeader("Authorization");
-					configuration.addExposedHeader("Set-Cookie");
-
+					configuration.addExposedHeader("set-cookie");
+				
+			        
 	                return configuration;
 	                // 설정된 CORS 구성 반환
 	            }
@@ -123,7 +142,7 @@ public class SecurityConfig {
 	        
 	        http
 	                .sessionManagement((session) -> session
-	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	
 	        // 세션 정책 설정 , 세션 생성하지않음 , Restful API와같이 상태를 유지하지않는 STATELESS 한 서비스에 적합.
 	        /*
 	         * REST API 가 왜 STATELESS(상태 유지안함)가 기본 특성인가 ?
@@ -133,6 +152,14 @@ public class SecurityConfig {
 	         */
 	        
 	        
+	        
 	        return http.build();
 	    }
-	}
+    
+
+}
+
+
+	    
+	    
+	

@@ -65,12 +65,13 @@ public class ReplyContoller {
 		int result = replyService.replyUpdate(reply);
 		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
-
 	
 	//댓글삭제(로그인 확인, id 확인)
-	@DeleteMapping("/replydelete/{postNo}/{replyNo}")
-	public ResponseEntity<Integer> replydelete(@RequestBody ReplyDto reply)throws Exception{
-		 int result = replyService.replyDelete(reply);
+	@DeleteMapping("/replydelete/{replyNo}")
+	public ResponseEntity<Integer> replydelete(@PathVariable("replyNo") int replyNo)throws Exception{
+		
+		 System.out.println("replyNo : "+replyNo);
+		 int result = replyService.replyDelete(replyNo);
 		 return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 	 
