@@ -115,13 +115,10 @@ public class MemberController {
     	    
       }
       @GetMapping("api/checkIdAvailability/phoneNumCheck")
-      public Integer checkPhoneAvailability(@RequestParam("phoneNum1") String phoneNum1,
-              @RequestParam("phoneNum2") String phoneNum2,
-              @RequestParam("phoneNum3") String phoneNum3) {
-          
-          
-          int availability = memberService.isPhoneNumAvailable(phoneNum1, phoneNum2, phoneNum3);
-         
-          return availability;
+      public int checkPhoneAvailability(@RequestParam List<String> phoneNumbers) {
+          String phoneNum1 = phoneNumbers.get(0);
+          String phoneNum2 = phoneNumbers.get(1);
+          String phoneNum3 = phoneNumbers.get(2);
+          return memberService.isPhoneNumAvailable(phoneNum1, phoneNum2, phoneNum3);
       }
 }
