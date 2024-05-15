@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,26 +50,22 @@ public class MemberService {
     	int result =  memberMapper.isMemberExistsByNickName(nickName);
 		return result;
     }
-
     public int isPhoneNumAvailable(String phoneNum1, String phoneNum2, String phoneNum3) {
-        // getMemberByPhoneNumber 메서드의 반환값이 null이면 사용 가능한 핸드폰 번호이고,
-        // null이 아니면 이미 사용 중인 핸드폰 번호입니다.
-    	int result = memberMapper.isMemberExistsByPhoneNumber(phoneNum1, phoneNum2, phoneNum3);
-    	System.out.println(result);
-    	return result;
+    Map<String, String> params = new HashMap<>();
+    params.put("phoneNum1", phoneNum1);
+    params.put("phoneNum2", phoneNum2);
+    params.put("phoneNum3", phoneNum3);
+    return memberMapper.isMemberExistsByPhoneNumber(params);
     }
-	
 	public boolean addMember(MemberDto memberDto) {
 		
 		
-		        // 이미 등록된 아이디인지 확인
 			 if (isIdAvailable(memberDto.getUserId()) > 0 ||
 			            isEmailAvailable(memberDto.getEmailNum1()) > 0 ||
 			            isNickNameAvailable(memberDto.getNickName()) > 0 ||
 			            isPhoneNumAvailable(memberDto.getPhoneNum1(), memberDto.getPhoneNum2(), memberDto.getPhoneNum3()) > 0
 			            
 					 ) {
-			            // 이미 등록된 정보가 하나라도 있으면 회원 추가 실패
 			            return false;
 			        }
 		        else {
@@ -98,7 +96,6 @@ public class MemberService {
 	        memberMapper.updateMember(memberDto);
 	        return true;
 	    } catch (Exception e) {
-	        // 업데이트에 실패한 경우에 대한 처리
 	        return false;
 	    }
 	}
@@ -131,22 +128,15 @@ public class MemberService {
         try {
         	
         	if (profileImage == null || profileImage.isEmpty()) {
-                // 이미지가 전송되지 않았을 때의 처리
                 return null;
             }
-            // 파일을 저장할 경로 설정
             Path uploadPath = Paths.get(uploadDirectory);
-            // 디렉토리가 존재하지 않으면 생성
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
-            // 파일명 생성
             String fileName = profileImage.getOriginalFilename();
-            // 파일 저장 경로 설정
             Path filePath = uploadPath.resolve(fileName);
-            // 파일 저장
             profileImage.transferTo(filePath.toFile());
-            // 저장된 파일의 경로를 반환
             return filePath.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,7 +147,6 @@ public class MemberService {
     public byte[] getImageBytes(String imagePath) {
     	
     	if (imagePath == null || imagePath.isEmpty()) {
-            // 이미지가 전송되지 않았을 때의 처리
             return null;
         }
         try {
