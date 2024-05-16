@@ -17,7 +17,7 @@ import jjon.bamyanggang.model.NoticeDto;
 import jjon.bamyanggang.notice.service.NoticeService;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/api/notice")
 public class NoticeController {
 	
 	@Autowired
