@@ -24,7 +24,7 @@ import jjon.bamyanggang.reply.service.ReplyService;
 
 
 @RestController
-@RequestMapping("api/community")
+@RequestMapping("/community")
 public class CommunityController {
 	
 	@Autowired

@@ -17,7 +17,7 @@ import jjon.bamyanggang.model.NoticeDto;
 import jjon.bamyanggang.notice.service.NoticeService;
 
 @RestController
-@RequestMapping("api/notice")
+@RequestMapping("/notice")
 public class NoticeController {
 	
 	@Autowired
@@ -34,13 +34,11 @@ public class NoticeController {
 		
 		int start = (page - 1) * size;
 		
-		//dao는 parameta를 2개를 받지 못하기에 map 으로 묶어서 전달
 		Map m = new HashMap<>();
 		m.put("start", start);
 		m.put("size", size);
 		
 		
-		//페이지 번호, 크기 받아서 해당 페이지의 공지사항 리스트 가져오기
 		List<NoticeDto> noticeList = noticeService.getNoticeList(m);
 		System.out.println("페이지 : "+ page +" 글목록 :" + noticeList);
 		
@@ -58,23 +56,19 @@ public class NoticeController {
 	@GetMapping("/noticecontent/{postNo}")
 	public ResponseEntity<Map<String, Object>> noticecontent(@PathVariable("postNo") int postNo){
 		
-		noticeService.updateVw(postNo); // 조회수 1 증가
-		NoticeDto notice = noticeService.getNotice(postNo); // 상세내용 구하기
+		noticeService.updateVw(postNo); 
+		NoticeDto notice = noticeService.getNotice(postNo); 
 		
 		System.out.println("postNo : "+ postNo);
 		
-		//이전글 postNo 가져오기
 		int prevPostNo = noticeService.getPrevPostNo(postNo);
-		//이전글 없을 경우 0으로 설정
 		if(prevPostNo == -1) {
 			notice.setPrevPostNo(0);
 		}else {
 			notice.setPrevPostNo(prevPostNo);
 		}
 		
-		//다음글 postNo 가져오기
 		int nextPostNo = noticeService.getNextPostNo(postNo);
-		//다음글 없을 경우 0으로 설정
 		if(nextPostNo == -1) {
 			notice.setNextPostNo(0);
 		}else {

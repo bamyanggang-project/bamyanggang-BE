@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,8 +93,8 @@ public class MemberService {
 		
 			
 		try {
-	        // 클라이언트로부터 전달된 memberDto에는 업데이트할 회원의 정보가 포함되어 있습니다.
-	        // 따라서 memberDto를 그대로 매퍼의 updateMember 메서드에 전달하여 업데이트를 수행합니다.
+	        String hashPassWd = bCryptPasswordEncoder.encode(memberDto.getPassWd());
+	        memberDto.setPassWd(hashPassWd);
 	        memberMapper.updateMember(memberDto);
 	        return true;
 	    } catch (Exception e) {
