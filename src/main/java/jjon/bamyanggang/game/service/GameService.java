@@ -24,14 +24,13 @@ public class GameService implements GameMapper{
 	// [게임시작 버튼] is_on_game 조회
 	@Override
 	@Transactional
-	public int getIsOnGame(MafiaRole mafiaRole) {
+	public int getIsOnGame(int roomNo) {
 		System.out.println("[게임시작 버튼] Service 시작!");
-		int roomNo = mafiaRole.getRoomNo();
 		// [게임시작 버튼] 게임 중 상태로 변경
 		udtIsOnGame(roomNo);
 		// [게임시작 버튼] 기준시간 설정
 		setTime(roomNo);
-		int getIsOnGame = gameMapper.getIsOnGame(mafiaRole);
+		int getIsOnGame = gameMapper.getIsOnGame(roomNo);
 		System.out.println("getIsOnGame : " + getIsOnGame);
 		
 		return getIsOnGame;
