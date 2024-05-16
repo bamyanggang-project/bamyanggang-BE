@@ -11,7 +11,7 @@
 	</update>
 	
 	<!-- [게임시작 버튼] is_on_game 조회 -->
-	<select id = "getIsOnGame" parameterType = "int" resultType = "int">
+	<select id = "getIsOnGame" parameterType = "mafia_role" resultType = "int">
 		select is_on_game from mafia_room
 		where room_no = #{roomNo}
 	</select>
