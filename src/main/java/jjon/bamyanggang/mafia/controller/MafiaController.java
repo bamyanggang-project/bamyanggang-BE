@@ -27,7 +27,7 @@ public class MafiaController {
 	// [방 생성]
 	// user_id, room_nm, room_st, room_pw 값을 담아 요청, SetRoom DTO에 저장 (Front-End)
 	// int형 room_no 값을 응답 (Back-End)
-	@PostMapping("createRoom")
+	@PostMapping("/api/createRoom")
 	public ResponseEntity<Map<String,Object>> createRoom(@RequestBody SetRoom setRoom) {
 		System.out.println("[방 생성] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -50,7 +50,7 @@ public class MafiaController {
 	
 	// [방 목록]
 	// List 객체에 방 목록 값을 담아 응답 (Back-End)
-	@GetMapping("getRoomList")
+	@GetMapping("/api/getRoomList")
 	public ResponseEntity<Map<String, Object>> getRoomList() {
 		System.out.println("[방 목록] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -72,7 +72,7 @@ public class MafiaController {
 	// [방 입장]
 	// user_id, room_no 값을 담아 요청, SetRoom DTO에 저장 (Front-End)
 	// int형 room_no 값을 응답 (Back-End)
-	@PostMapping("joinRoom")
+	@PostMapping("/api/joinRoom")
 	public ResponseEntity<Map<String, Object>> joinRoom(@RequestBody SetRoom setRoom) {
 		System.out.println("[방 입장] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -94,7 +94,7 @@ public class MafiaController {
 	// [방 대기] 방 정보 조회
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// MafiaRoom 객체에 대기 방의 정보 값을 담아 응답 (Back-End)
-	@GetMapping("getRoomInfo") 
+	@GetMapping("/api/getRoomInfo") 
 	public ResponseEntity<Map<String, Object>> getRoomInfo(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[방 대기] 방 정보 조회 Controller 시작!");
 		Map<String, Object> responseBody =new HashMap<String, Object>();
@@ -116,7 +116,7 @@ public class MafiaController {
 	// [방 대기] 참여 사용자 정보 조회
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// List 객체에 대기 방에 입장한 사용자들의 정보 값을 담아 응답 (Back-End)
-	@GetMapping("getUserInfo") 
+	@GetMapping("/api/getUserInfo") 
 	public ResponseEntity<Map<String, Object>> getUserInfo(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[방 대기] 참여 사용자 정보 조회 Controller 시작!");
 		Map<String, Object> responseBody =new HashMap<String, Object>();
@@ -138,7 +138,7 @@ public class MafiaController {
 	// [방 퇴장]
 	// user_id, room_no 값을 담아 요청, SetRoom DTO에 저장 (Front-Ent)
 	// List 객체에 방 목록 값을 담아 응답 (Back-End)
-	@PostMapping("exitRoom")
+	@PostMapping("/api/exitRoom")
 	public ResponseEntity<Map<String, Object>> exitRoom(@RequestBody SetRoom setRoom) {
 		System.out.println("[방 퇴장] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
