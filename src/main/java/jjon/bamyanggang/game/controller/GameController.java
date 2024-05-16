@@ -26,14 +26,14 @@ public class GameController {
 	private GameService gameService;
 	
 	// [게임시작 버튼]
-	// MafiaRole 객체에 room_no 값을 담아 요청 (Front-End)
+	// int형 room_no 값을 담아 요청 (Front-End)
 	// int형 is_on_game 값을 담아 응답 (Back-End)
-	@PostMapping("/api/getIsOnGame")
-	public ResponseEntity<Map<String, Object>> getIsOnGame(@RequestBody MafiaRole mafiaRole) {
+	@GetMapping("/api/getIsOnGame")
+	public ResponseEntity<Map<String, Object>> getIsOnGame(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[게임시작 버튼] Controller 시작!");
 		Map<String, Object> responseBody =new HashMap<String, Object>();
 		try {
-			int getIsOnGame = gameService.getIsOnGame(mafiaRole);
+			int getIsOnGame = gameService.getIsOnGame(roomNo);
 			responseBody.put("msg", "[게임시작 버튼] 성공!");
 			responseBody.put("isOnGame", getIsOnGame);
 			

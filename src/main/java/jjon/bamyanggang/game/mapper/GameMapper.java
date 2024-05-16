@@ -16,7 +16,7 @@ public interface GameMapper {
 	public void udtIsOnGame(int roomNo);
 	
 	// [게임시작 버튼] is_on_game 조회
-	public int getIsOnGame(MafiaRole mafiaRole);
+	public int getIsOnGame(int roomNo);
 	
 	// [게임시작 버튼] 기준시간 설정
 	public void setTime(int roomNo);
