@@ -26,9 +26,14 @@
     SELECT COUNT(*) FROM member WHERE user_email1 = #{emailNum1}
 </select>
 
-<select id="isMemberExistsByPhoneNumber" resultType="int" parameterType="String">
-    SELECT COUNT(*) FROM member WHERE user_tel1 = #{arg0} AND user_tel2 = #{arg1} AND user_tel3 = #{arg2}
+<select id="isMemberExistsByPhoneNumber" resultType="int" parameterType="map">
+    SELECT COUNT(*) 
+    FROM member 
+    WHERE user_tel1 = #{phoneNum1} 
+    AND user_tel2 = #{phoneNum2} 
+    AND user_tel3 = #{phoneNum3}
 </select>
+
 
 <select id="isMemberExistsByNickName" resultType="int" parameterType="String">
     SELECT COUNT(*) FROM member WHERE user_nicknm = #{nickName}
