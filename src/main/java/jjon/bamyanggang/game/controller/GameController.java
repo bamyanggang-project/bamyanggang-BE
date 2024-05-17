@@ -57,9 +57,8 @@ public class GameController {
 		System.out.println("[게임시작] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
 		try {
-			List<RoomUserInfo> gameStart = gameService.gameStart(roomNo);
 			responseBody.put("msg", "[게임시작] 성공!");
-			responseBody.put("사용자정보", gameStart);
+			responseBody.put("사용자정보", gameService.gameStart(roomNo));
 			// 200
 			return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
 		} catch (Exception e) {
