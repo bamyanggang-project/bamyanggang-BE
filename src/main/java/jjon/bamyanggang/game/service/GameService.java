@@ -77,15 +77,14 @@ public class GameService implements GameMapper{
 			}
 			// [게임시작] mafia_vote table 초기세팅
 			initVote(roomNo);
-			System.out.println("mafia_vote 초기화 완료");
 			// [게임시작] mafia_role 조회 (role 변경 후)
 			getUserInfo = getUserInfo(roomNo);
-			System.out.println("getUserInfo 크기 : " + getUserInfo.size());
 			
 			return getUserInfo;
 		}
+		// [게임시작] mafia_role 조회 (role 변경 후)
 		getUserInfo = getUserInfo(roomNo);
-		System.out.println("getUserInfo 크기 : " + getUserInfo.size());
+		
 		return getUserInfo;
 	}
 	
