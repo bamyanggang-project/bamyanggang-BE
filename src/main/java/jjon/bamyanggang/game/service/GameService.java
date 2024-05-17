@@ -46,7 +46,7 @@ public class GameService implements GameMapper{
 		int cntRoomNoExists = cntRoomNoExists(roomNo);
 		System.out.println("중복방 개수 : " + cntRoomNoExists);
 		List<RoomUserInfo> getUserInfo = new ArrayList<RoomUserInfo>();
-		if (cntRoomNoExists == 0) {
+		if (cntRoomNoExists == 2) {
 			// [게임시작] mafia_role 조회 (role 변경 전)
 			getUserInfo = getUserInfo(roomNo);
 			// 역할 목록 생성 (시민1~5, 마피아)
