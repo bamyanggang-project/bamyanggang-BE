@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// WebSocket 서버 연결 엔드 포인트
-		registry.addEndpoint("/ws-bamyanggang")
+		registry.addEndpoint("/api/ws-bamyanggang")
 				// 모든 도메인 허용
 				.setAllowedOriginPatterns("*");
 	}
