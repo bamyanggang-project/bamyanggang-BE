@@ -31,8 +31,9 @@ public class GameService implements GameMapper{
 		udtIsOnGame(roomNo);
 		System.out.println("업데이트문 실행");
 		// [게임시작 버튼] 기준시간 설정
-		setTime(roomNo);
-		System.out.println("시간설정 실행");
+		/*
+		 * setTime(roomNo); System.out.println("시간설정 실행");
+		 */
 		int getIsOnGame = gameMapper.getIsOnGame(roomNo);
 		System.out.println("getIsOnGame : " + getIsOnGame);
 		
