@@ -31,6 +31,7 @@ public class GameController {
 	@GetMapping("/api/getIsOnGame")
 	public ResponseEntity<Map<String, Object>> getIsOnGame(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[게임시작 버튼] Controller 시작!");
+		System.out.println("roomNo : " + roomNo);
 		Map<String, Object> responseBody =new HashMap<String, Object>();
 		try {
 			int getIsOnGame = gameService.getIsOnGame(roomNo);
