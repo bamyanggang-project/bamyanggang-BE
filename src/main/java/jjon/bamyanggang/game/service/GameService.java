@@ -84,6 +84,8 @@ public class GameService implements GameMapper{
 			
 			return getUserInfo;
 		}
+		getUserInfo = getUserInfo(roomNo);
+		System.out.println("getUserInfo 크기 : " + getUserInfo.size());
 		return getUserInfo;
 	}
 	
