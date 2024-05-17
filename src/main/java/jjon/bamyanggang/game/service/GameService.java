@@ -51,7 +51,7 @@ public class GameService implements GameMapper{
 			getUserInfo = getUserInfo(roomNo);
 			// 역할 목록 생성 (시민1~5, 마피아)
 			List<String> roleList = new ArrayList<String>();
-			for (int i = 1; i <= 5; i++) {
+			for (int i = 1; i <= 4; i++) {
 				roleList.add("시민");
 			}
 			roleList.add("마피아");
