@@ -26,6 +26,7 @@ public class GameService implements GameMapper{
 	@Transactional
 	public int getIsOnGame(int roomNo) {
 		System.out.println("[게임시작 버튼] Service 시작!");
+		System.out.println("roomNo : " + roomNo);
 		// [게임시작 버튼] 게임 중 상태로 변경
 		udtIsOnGame(roomNo);
 		// [게임시작 버튼] 기준시간 설정
