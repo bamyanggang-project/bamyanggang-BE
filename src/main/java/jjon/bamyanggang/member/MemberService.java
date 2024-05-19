@@ -31,16 +31,13 @@ public class MemberService {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	// 중복 확인 메서드 추가
 	 public int isIdAvailable(String userId) {
 	        
-		 
 		int result =  memberMapper.isMemberExistsById(userId);
 		return result;
 		  
 	 }
 	
-
     public int isEmailAvailable(String emailNum1) {
     	int result =  memberMapper.isMemberExistsByEmail(emailNum1);
 		return result;
@@ -84,9 +81,7 @@ public class MemberService {
 	    }
 		
 	public boolean updateMember(MemberDto memberDto) {
-		
-		
-			
+				
 		try {
 	        String hashPassWd = bCryptPasswordEncoder.encode(memberDto.getPassWd());
 	        memberDto.setPassWd(hashPassWd);
