@@ -30,10 +30,7 @@ public class SecurityConfig {
 
 	 private final AuthenticationConfiguration authenticationConfiguration;
 	    private final JwtUtil jwtUtil;
-	    private final RefreshRepository refreshRepository;
-	    
-
-
+	    private final RefreshRepository refreshRepository;	    
 	    
 	    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil, RefreshRepository refreshRepository 
 	    		) {
@@ -46,24 +43,12 @@ public class SecurityConfig {
 
 	    @Bean
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
 	        return configuration.getAuthenticationManager();
 	    }
-
 	    @Bean
 	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
 	        return new BCryptPasswordEncoder();
-	    }
-	    
-	    
-	   
-
-
-
-
-	   
-
+	    }	    
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    	http
@@ -114,13 +99,10 @@ public class SecurityConfig {
 	        http
 	        .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 	        
-	        
 	        http
 	                .sessionManagement((session) -> session
 	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	
-	        
-	        
-	        
+	             	        
 	        return http.build();
 	    }
     
