@@ -82,10 +82,7 @@ public class MemberService {
 	        return memberMapper.getUserByUserId(userId);
 	        
 	    }
-	
-
-	
-	
+		
 	public boolean updateMember(MemberDto memberDto) {
 		
 		
@@ -118,12 +115,6 @@ public class MemberService {
 		
 	}
 	
-	
-		
-	
-
-
-
 	public String saveImage(MultipartFile profileImage) {
         try {
         	
