@@ -12,9 +12,6 @@ import jjon.bamyanggang.login.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-	
-	
-	
     private final UserRepository userRepository;
 
     public CustomUserDetailsService(UserRepository userRepository) {
@@ -31,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             return new CustomUserDetails(userData);
         }
-
 
         return null;
     }
