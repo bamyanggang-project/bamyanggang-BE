@@ -17,15 +17,8 @@ public class JwtUtil {
 	
 	private SecretKey secretKey;
 	
-	
-	
 	public JwtUtil(@Value("${jwt.secret}") String secret) {
-		/* yml 들여쓰기 에러로 못찾는 경우있음 예를들어 spring: 과 같은 줄에있는경우 spring 하위파일로 들어가고
-		 * spirng 과 같은줄에 있으면 같은 상위파일이 된다.
-	
-		*/
-		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
-		
+		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());		
 	}
 	
 	public String getUsername(String token) {
@@ -55,6 +48,4 @@ public class JwtUtil {
 	            .signWith(secretKey)
 	            .compact();
 	}
-	
-	
 }
