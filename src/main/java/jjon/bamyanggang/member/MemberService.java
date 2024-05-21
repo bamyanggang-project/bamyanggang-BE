@@ -20,9 +20,8 @@ public class MemberService {
 	private final MemberMapper memberMapper;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final PasswordEncoder passwordEncoder;
-    @Value("${upload.directory}")
-    private String uploadDirectory;
-
+    	@Value("${upload.directory}")
+    	private String uploadDirectory;
 	
 	public MemberService(MemberMapper memberMapper, BCryptPasswordEncoder bCryptPasswordEncoder, PasswordEncoder passwordEncoder) {
 		
