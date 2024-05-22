@@ -11,19 +11,16 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 
-
+//JWT 토큰을 생성하고 검증하는 유틸리티 클래스
 @Component
 public class JwtUtil {
 	
 	private SecretKey secretKey;
 	
 	
-	
+	// 생성자: yml 파일에서 비밀 키를 읽어와서 SecretKey 객체를 생성함
 	public JwtUtil(@Value("${jwt.secret}") String secret) {
-		/* yml 들여쓰기 에러로 못찾는 경우있음 예를들어 spring: 과 같은 줄에있는경우 spring 하위파일로 들어가고
-		 * spirng 과 같은줄에 있으면 같은 상위파일이 된다.
-	
-		*/
+		
 		this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 		
 	}
@@ -46,14 +43,16 @@ public class JwtUtil {
 	
 	public String createJwt(String category, String userId, String role, long expiredMs) {
 		
+		
+		// JWT 토큰 생성하는 메서드
 		return Jwts.builder()
-	            .claim("category", category)
-	            .claim("username", userId)
-	            .claim("role", role)
-	            .issuedAt(new Date(System.currentTimeMillis()))
-	            .expiration(new Date(System.currentTimeMillis() + expiredMs))
-	            .signWith(secretKey)
-	            .compact();
+	            .claim("category", category) // 페이로드에 카테고리 추가
+	            .claim("username", userId) // 페이로드에 사용자 이름 추가
+	            .claim("role", role) // 페이로드에 역할 추가
+	            .issuedAt(new Date(System.currentTimeMillis())) // 토큰 발급 시간 설정
+	            .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 토큰 만료 시간 설정
+	            .signWith(secretKey)  // 비밀 키로 서명
+	            .compact(); // 최종적으로 JWT 문자열 생성
 	}
 	
 	
