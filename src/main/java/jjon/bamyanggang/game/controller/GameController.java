@@ -28,9 +28,10 @@ public class GameController {
 	// [게임시작 버튼]
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// int형 is_on_game 값을 담아 응답 (Back-End)
-	@GetMapping("getIsOnGame")
+	@GetMapping("/api/getIsOnGame")
 	public ResponseEntity<Map<String, Object>> getIsOnGame(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[게임시작 버튼] Controller 시작!");
+		System.out.println("roomNo : " + roomNo);
 		Map<String, Object> responseBody =new HashMap<String, Object>();
 		try {
 			int getIsOnGame = gameService.getIsOnGame(roomNo);
@@ -51,14 +52,14 @@ public class GameController {
 	// [게임시작] 
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// RoomUserInfo 객체에 방에 입장한 사용자들의 정보 값을 담아 응답 (Back-End)
-	@GetMapping("gameStart")
+	@GetMapping("/api/gameStart")
 	public ResponseEntity<Map<String, Object>> gameStart(@RequestParam("roomNo") int roomNo) {
 		System.out.println("[게임시작] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
 		try {
-			List<RoomUserInfo> gameStart = gameService.gameStart(roomNo);
+			List<RoomUserInfo> getUserInfo = gameService.gameStart(roomNo);
 			responseBody.put("msg", "[게임시작] 성공!");
-			responseBody.put("사용자정보", gameStart);
+			responseBody.put("사용자정보", getUserInfo);
 			// 200
 			return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
 		} catch (Exception e) {
@@ -72,7 +73,7 @@ public class GameController {
 	// [게임시작] 기준시간 조회
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// Timestamp 객체에 저장된 시간 값을 담아 응답 (Back-End)
-	@GetMapping("getTime")
+	@GetMapping("/api/getTime")
 	public ResponseEntity<Map<String, Object>> getTime(@RequestParam("roomNo") int roomNo) {
 		Map<String, Object> responseBody = new HashMap<String, Object>();
 		try {
@@ -92,7 +93,7 @@ public class GameController {
 	
 	// [투표]
 	// MafiaRole 객체에 room_no, user_id 값을 담아 요청 (Front-End)
-	@PostMapping("vote")
+	@PostMapping("/api/vote")
 	public ResponseEntity<Map<String, Object>> vote(@RequestBody MafiaRole mafiaRole) {
 		System.out.println("[투표] Controller 시작!");
 		Map<String, Object> responseBody =new HashMap<String, Object>();
@@ -113,7 +114,7 @@ public class GameController {
 	// [인게임]
 	// int형 room_no 값을 담아 요청 (Front-End)
 	// Map객체에 result, user_id, user_nicknm 값을 담아 응답 (Back-End)
-	@GetMapping("resultVote")
+	@GetMapping("/api/resultVote")
 	public ResponseEntity<Map<String, Object>> resultVote (@RequestParam("roomNo") int roomNo) {
 		System.out.println("[인게임] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();
@@ -134,7 +135,7 @@ public class GameController {
 	
 	// [게임나가기]
 	// MafiaRole 객체에 room_no, user_id 값을 담아 요청 (Front-End)
-	@PostMapping("gameOut")
+	@PostMapping("/api/gameOut")
 	public ResponseEntity<Map<String, Object>> gameOut(@RequestBody MafiaRole mafiaRole) {
 		System.out.println("[게임나가기] Controller 시작!");
 		Map<String, Object> responseBody = new HashMap<String, Object>();

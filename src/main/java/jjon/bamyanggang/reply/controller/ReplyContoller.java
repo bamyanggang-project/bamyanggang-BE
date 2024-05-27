@@ -21,7 +21,7 @@ import jjon.bamyanggang.model.ReplyDto;
 import jjon.bamyanggang.reply.service.ReplyService;
 
 @RestController
-@RequestMapping("/reply")
+@RequestMapping("/api/reply")
 public class ReplyContoller {
 
 	@Autowired

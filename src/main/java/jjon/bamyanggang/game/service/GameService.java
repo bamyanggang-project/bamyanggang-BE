@@ -26,10 +26,13 @@ public class GameService implements GameMapper{
 	@Transactional
 	public int getIsOnGame(int roomNo) {
 		System.out.println("[게임시작 버튼] Service 시작!");
+		System.out.println("roomNo : " + roomNo);
 		// [게임시작 버튼] 게임 중 상태로 변경
 		udtIsOnGame(roomNo);
+		System.out.println("업데이트문 실행");
 		// [게임시작 버튼] 기준시간 설정
 		setTime(roomNo);
+		System.out.println("시간설정 실행");
 		int getIsOnGame = gameMapper.getIsOnGame(roomNo);
 		System.out.println("getIsOnGame : " + getIsOnGame);
 		
@@ -48,7 +51,7 @@ public class GameService implements GameMapper{
 			getUserInfo = getUserInfo(roomNo);
 			// 역할 목록 생성 (시민1~5, 마피아)
 			List<String> roleList = new ArrayList<String>();
-			for (int i = 1; i <= 5; i++) {
+			for (int i = 1; i <= 4; i++) {
 				roleList.add("시민");
 			}
 			roleList.add("마피아");
@@ -79,6 +82,9 @@ public class GameService implements GameMapper{
 			
 			return getUserInfo;
 		}
+		// [게임시작] mafia_role 조회 (role 변경 후)
+		getUserInfo = getUserInfo(roomNo);
+		
 		return getUserInfo;
 	}
 	

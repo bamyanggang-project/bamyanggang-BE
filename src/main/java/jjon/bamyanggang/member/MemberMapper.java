@@ -15,7 +15,6 @@ public interface MemberMapper {
 		public String findByPassword(String userId);
 		public int isMemberExistsById(String userId);
 	    public int isMemberExistsByEmail(String emailnum1);
-	    //public int isMemberExistsByPhoneNumber(String phoneNum1, String phoneNum2, String phoneNum3);
 	    public int isMemberExistsByNickName(String nickName);
 		public int isMemberExistsByPhoneNumber(Map<String, String> params);
 	    
