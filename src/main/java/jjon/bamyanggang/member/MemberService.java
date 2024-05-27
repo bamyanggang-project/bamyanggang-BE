@@ -20,9 +20,8 @@ public class MemberService {
 	private final MemberMapper memberMapper;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final PasswordEncoder passwordEncoder;
-    @Value("${upload.directory}")
-    private String uploadDirectory;
-
+    	@Value("${upload.directory}")
+    	private String uploadDirectory;
 	
 	public MemberService(MemberMapper memberMapper, BCryptPasswordEncoder bCryptPasswordEncoder, PasswordEncoder passwordEncoder) {
 		
@@ -31,16 +30,13 @@ public class MemberService {
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	// 중복 확인 메서드 추가
 	 public int isIdAvailable(String userId) {
 	        
-		 
 		int result =  memberMapper.isMemberExistsById(userId);
 		return result;
 		  
 	 }
 	
-
     public int isEmailAvailable(String emailNum1) {
     	int result =  memberMapper.isMemberExistsByEmail(emailNum1);
 		return result;
@@ -82,14 +78,9 @@ public class MemberService {
 	        return memberMapper.getUserByUserId(userId);
 	        
 	    }
-	
-
-	
-	
+		
 	public boolean updateMember(MemberDto memberDto) {
-		
-		
-			
+				
 		try {
 	        String hashPassWd = bCryptPasswordEncoder.encode(memberDto.getPassWd());
 	        memberDto.setPassWd(hashPassWd);
@@ -118,12 +109,6 @@ public class MemberService {
 		
 	}
 	
-	
-		
-	
-
-
-
 	public String saveImage(MultipartFile profileImage) {
         try {
         	

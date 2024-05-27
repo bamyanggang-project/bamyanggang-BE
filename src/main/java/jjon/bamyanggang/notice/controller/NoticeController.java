@@ -29,9 +29,6 @@ public class NoticeController {
 			@RequestParam(value="page", defaultValue = "1") int page,
 			@RequestParam(value="size" ,defaultValue = "10") int size){
 		
-		System.out.println("page : "+ page);
-		System.out.println("size : "+ size);
-		
 		int start = (page - 1) * size;
 		
 		Map m = new HashMap<>();

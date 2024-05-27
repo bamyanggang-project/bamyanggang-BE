@@ -30,10 +30,7 @@ public class SecurityConfig {
 
 	 private final AuthenticationConfiguration authenticationConfiguration;
 	    private final JwtUtil jwtUtil;
-	    private final RefreshRepository refreshRepository;
-	    
-
-
+	    private final RefreshRepository refreshRepository;	    
 	    
 	    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil, RefreshRepository refreshRepository 
 	    		) {
@@ -46,24 +43,12 @@ public class SecurityConfig {
 
 	    @Bean
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
 	        return configuration.getAuthenticationManager();
 	    }
-
 	    @Bean
 	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
 	        return new BCryptPasswordEncoder();
-	    }
-	    
-	    
-	   
-
-
-
-
-	   
-
+	    }	    
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    	http
@@ -78,49 +63,38 @@ public class SecurityConfig {
 	                configuration.setAllowCredentials(true); // 자격증명 허용 설정
 	                configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
 	                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
-					configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
-					configuration.addExposedHeader("Authorization");
-					configuration.addExposedHeader("set-cookie");
+			configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
+			configuration.addExposedHeader("Authorization");
+			configuration.addExposedHeader("set-cookie");
 				
 			        
 	                return configuration;
 	            }
 	        })));
-
-	
 	    	http
 	                .csrf((auth) -> auth.disable());
-
 	    
 	        http
 	                .formLogin((auth) -> auth.disable());
 
-
 	        http
 	                .httpBasic((auth) -> auth.disable());
 
-	 
 	        http
 	                .authorizeHttpRequests((auth) -> auth
 	                        .requestMatchers("/**").permitAll()
 	                        .requestMatchers("/admin").hasRole("ADMIN")
 	                        .anyRequest().authenticated());
-	        				
-
 	        http
 	                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
 	        http
 	                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 	        http
-	        .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
-	        
-	        
+	        	.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 	        http
 	                .sessionManagement((session) -> session
 	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	
-	        
-	        
-	        
+	             	        
 	        return http.build();
 	    }
     

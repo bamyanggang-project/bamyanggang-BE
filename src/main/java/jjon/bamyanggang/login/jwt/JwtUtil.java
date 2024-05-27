@@ -2,13 +2,10 @@ package jjon.bamyanggang.login.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Jwts;
 
 //JWT 토큰을 생성하고 검증하는 유틸리티 클래스
@@ -16,8 +13,7 @@ import io.jsonwebtoken.Jwts;
 public class JwtUtil {
 	
 	private SecretKey secretKey;
-	
-	
+  
 	// 생성자: yml 파일에서 비밀 키를 읽어와서 SecretKey 객체를 생성함
 	public JwtUtil(@Value("${jwt.secret}") String secret) {
 		
@@ -54,6 +50,4 @@ public class JwtUtil {
 	            .signWith(secretKey)  // 비밀 키로 서명
 	            .compact(); // 최종적으로 JWT 문자열 생성
 	}
-	
-	
 }

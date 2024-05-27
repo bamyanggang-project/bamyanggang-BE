@@ -26,21 +26,16 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
 
 	private final AuthenticationManager authenticationManager;
-	
 	private final JwtUtil jwtUtil;
 	private final RefreshRepository refreshRepository;
 	
-	
 	public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository) 
-	{
-		
+	{		
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
 		setFilterProcessesUrl("/api/login");
 		// 배포를 위한 api 로 url 변경
-		
-		
 	}
 	
 	@Override
@@ -53,25 +48,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		        String username = jsonNode.get("userId").textValue();
 		        String password = jsonNode.get("userPw").textValue();
 		        
-		        System.out.println(username + " + " + password);
-
-		        // 스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야함 
 		        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
-		        System.out.println(authToken);
-		        // token에 담은 검증을 위한 AuthenticationManager로 전달
 		        return authenticationManager.authenticate(authToken);
-		        // authenticationManager.authenticate 로 리턴하여 검증 (username , passowrd 같은지 -> 패스워드는 BCrypt 알고리즘 해싱으로 비교하여검증)
 		       
 		    } catch (IOException e) {
 		        throw new RuntimeException("Could not read JSON request", e);
 		    }
 	}
 	
-		// 로그인 성공시 싱행하는 메소드(여기서 JWT 를 발급하면됨)
 		@Override
 		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication )
-		{
-		    //유저 정보
+		{ 
 		    String username = authentication.getName();
 		    System.out.println(username);
 		    
@@ -80,19 +67,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    GrantedAuthority auth = iterator.next();
 		    String role = auth.getAuthority();
 
-		    //토큰 생성
 		    String access = jwtUtil.createJwt("access", username, role, 600000L);
 		    String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 		    addRefreshEntity(username, refresh, 86400000L);
-
-		    //응답 설정
 		    response.setHeader("access", access);
 		    response.addHeader("Authorization", access);
 		    response.addCookie(createCookie("refresh", refresh) ); // 수정
 		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
-		    
-			System.out.println("토큰 발급 성공 access : " + access + " refresh : " + refresh);
 		}
 		@Override
 		protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse reponse,  AuthenticationException failed )
@@ -102,18 +84,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 		
 		private void addRefreshEntity(String username, String refresh, Long expiredMs) {
-			
-			
-			Date date = new Date(System.currentTimeMillis() + expiredMs);
-			
+		
+			Date date = new Date(System.currentTimeMillis() + expiredMs);		
 			RefreshEntity refreshEntity = new RefreshEntity();
 			refreshEntity.setUsername(username);
 			refreshEntity.setRefresh(refresh);
-			refreshEntity.setExpiration(date.toString());
-			
+			refreshEntity.setExpiration(date.toString());	
 			refreshRepository.save(refreshEntity);
 		}
-		
 		private Cookie createCookie(String key, String value ) { // 수정
 			Cookie cookie = new Cookie(key, value);
 		    cookie.setMaxAge(24*60*60);
@@ -121,10 +99,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    cookie.setPath("/");
 		    cookie.setAttribute("SameSite", "None");
 		    cookie.setHttpOnly(true);
-		   
-		    
+		   		    
 		    return cookie;
-		}
-	
-		
+		}	
 }

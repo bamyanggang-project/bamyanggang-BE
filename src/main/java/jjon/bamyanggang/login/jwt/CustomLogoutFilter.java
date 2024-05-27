@@ -80,8 +80,6 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		return;
 	}
 	
-	// 토큰이 refresh 인지 확인 (발급시 페이로드에 명시
-	
 	String category = jwtUtil.getCategory(refresh);
 	if(!category.equals("refresh") ) {
 		
@@ -90,7 +88,6 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		return;
 	}
 	
-	// DB에 저장되어있는지 확인
 	Boolean isExist = refreshRepository.existsByRefresh(refresh);
 	
 	if(!isExist) {
@@ -100,11 +97,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		return;
 	}
 	
-	// 로그아웃 진행
-	// refresh 토큰 DB에서 제거
 	refreshRepository.deleteByRefresh(refresh);
-	
-	// Refresh 토큰 Cookie 값 0
 	Cookie cookie = new Cookie("refresh", null);
 	cookie.setMaxAge(0);
 	// 로그아웃시 어디로 보낼것인지
@@ -112,6 +105,5 @@ public class CustomLogoutFilter extends GenericFilterBean {
 	
 	response.addCookie(cookie);
 	response.setStatus(HttpServletResponse.SC_OK);
-	
 	}
 } 

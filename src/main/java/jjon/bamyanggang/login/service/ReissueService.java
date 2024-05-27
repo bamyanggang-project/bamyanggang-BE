@@ -60,15 +60,12 @@ public class ReissueService {
             return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
 
-        // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
         String category = jwtUtil.getCategory(refresh);
 
         if (!category.equals("refresh")) {
-            // response status code
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
         
-        // DB 저장되어 있는지 확인
         Boolean isExist = refreshRepository.existsByRefresh(refresh);
         if(!isExist) {
             // response body
@@ -85,10 +82,8 @@ public class ReissueService {
         refreshRepository.deleteByRefresh(refresh);
         addRefreshEntity(username, refresh, 86400000L);
         
-        // response
         response.setHeader("access", newAccess);
-        response.addHeader("Authorization", newRefresh);
-        	
+        response.addHeader("Authorization", newRefresh);     	
         response.addCookie(createCookie("refresh", newRefresh));
         
         return new ResponseEntity<>(HttpStatus.OK);

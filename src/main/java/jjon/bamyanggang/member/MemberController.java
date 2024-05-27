@@ -29,9 +29,6 @@ public class MemberController {
 	  
 	  @PostMapping("/api/addmember")
 	  public ResponseEntity<String> addMember(@RequestBody MemberDto memberDto) {
-	        // 이미지 파일이 전송되었는지 확인
-		 
-
 	        boolean success = memberService.addMember(memberDto);
 	        if (success) {
 	            return ResponseEntity.ok("회원가입이 성공적으로 처리되었습니다.");
@@ -59,9 +56,7 @@ public class MemberController {
 	  
 	  @PutMapping("/api/update/{userId}")
 	  public ResponseEntity<String> updateMember(@PathVariable("userId") String userId, @RequestBody MemberDto memberDto) {
-		  memberDto.setUserId(userId);
-		 
-		  
+		  memberDto.setUserId(userId);		  
 		  boolean success = memberService.updateMember(memberDto);
 		 if(success) {
 			 return ResponseEntity.ok("회원 수정 완료");
@@ -70,12 +65,9 @@ public class MemberController {
 			 return ResponseEntity.badRequest().body("회줭 수정 실패하였습니다.");
 		 }
 	  }
-	  
-	  
-		  
+
 		  @DeleteMapping("/api/deletemember")
-		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
-			  
+		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {			  
 			  boolean succes = memberService.deleteMember(memberDto);
 			  if(succes) {
 				  return ResponseEntity.ok("회원 탈퇴원료");
@@ -93,7 +85,7 @@ public class MemberController {
 			      
 			    }
 	  
-	// 중복 확인을 위한 엔드포인트 추가
+	
       @GetMapping("/api/checkIdAvailability/idCheck/{userId}")
       public Integer checkIdAvailability(@PathVariable("userId") String userId) {
     	  int availability = memberService.isIdAvailable(userId);

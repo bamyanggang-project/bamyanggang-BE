@@ -12,13 +12,9 @@ import jjon.bamyanggang.login.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-	
-	
-	
     private final UserRepository userRepository;
 
     public CustomUserDetailsService(UserRepository userRepository) {
-
         this.userRepository = userRepository;
     }
 
@@ -28,11 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity userData = userRepository.findByUsername(username);
 
         if (userData != null) {
-
             return new CustomUserDetails(userData);
         }
-
-
         return null;
     }
 
