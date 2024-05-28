@@ -1,9 +1,7 @@
 package jjon.bamyanggang.login.jwt;
 
 import java.io.IOException;
-
 import org.springframework.web.filter.GenericFilterBean;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
 public class CustomLogoutFilter extends GenericFilterBean {
-	
 	
 	private final JwtUtil jwtUtil;
 	private final RefreshRepository refreshRepository;
