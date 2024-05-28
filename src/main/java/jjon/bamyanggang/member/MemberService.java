@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +30,6 @@ public class MemberService {
 	}
 	
 	 public int isIdAvailable(String userId) {
-	        
 		int result =  memberMapper.isMemberExistsById(userId);
 		return result;
 		  
@@ -54,14 +52,12 @@ public class MemberService {
     return memberMapper.isMemberExistsByPhoneNumber(params);
     }
 	public boolean addMember(MemberDto memberDto) {
-		
-		
 			 if (isIdAvailable(memberDto.getUserId()) > 0 ||
 			            isEmailAvailable(memberDto.getEmailNum1()) > 0 ||
 			            isNickNameAvailable(memberDto.getNickName()) > 0 ||
 			            isPhoneNumAvailable(memberDto.getPhoneNum1(), memberDto.getPhoneNum2(), memberDto.getPhoneNum3()) > 0
-			            
-					 ) {
+					 ) 
+			 	{
 			            return false;
 			        }
 		        else {
@@ -73,14 +69,10 @@ public class MemberService {
 		    } 
 	
 	public MemberDto getUserByUserId(String userId) {
-	        
-		
-	        return memberMapper.getUserByUserId(userId);
-	        
+	        return memberMapper.getUserByUserId(userId);        
 	    }
 		
-	public boolean updateMember(MemberDto memberDto) {
-				
+	public boolean updateMember(MemberDto memberDto) {		
 		try {
 	        String hashPassWd = bCryptPasswordEncoder.encode(memberDto.getPassWd());
 	        memberDto.setPassWd(hashPassWd);
@@ -91,8 +83,7 @@ public class MemberService {
 	    }
 	}
 	
-	public boolean deleteMember(MemberDto memberDto) {
-			
+	public boolean deleteMember(MemberDto memberDto) {	
 			String userId = memberDto.getUserId();
 			String inputPw = memberDto.getPassWd();
 			String storedPw = memberMapper.findByPassword(userId);
@@ -108,10 +99,8 @@ public class MemberService {
 		
 		
 	}
-	
 	public String saveImage(MultipartFile profileImage) {
         try {
-        	
         	if (profileImage == null || profileImage.isEmpty()) {
                 return null;
             }
