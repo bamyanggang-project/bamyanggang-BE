@@ -14,8 +14,8 @@ public interface MemberMapper {
 		public void deleteMember(MemberDto memberDto);
 		public String findByPassword(String userId);
 		public int isMemberExistsById(String userId);
-	    public int isMemberExistsByEmail(String emailnum1);
-	    public int isMemberExistsByNickName(String nickName);
+	    	public int isMemberExistsByEmail(String emailnum1);
+	    	public int isMemberExistsByNickName(String nickName);
 		public int isMemberExistsByPhoneNumber(Map<String, String> params);
 	    
 }
