@@ -22,9 +22,6 @@ public class LoginController {
 		this.userService = userService;
 	}
 
-	
-
-	
 	@DeleteMapping("/delete/{userId}")
 	public String DeleteMember(@PathVariable("userId") String userId)
 	{
