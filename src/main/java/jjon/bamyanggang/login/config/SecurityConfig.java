@@ -27,7 +27,7 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+// 시큐리티 인증설정 클래스
 	 private final AuthenticationConfiguration authenticationConfiguration;
 	    private final JwtUtil jwtUtil;
 	    private final RefreshRepository refreshRepository;	    
@@ -51,51 +51,32 @@ public class SecurityConfig {
 	    }	    
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    	http
-	        .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-	            @Override
-	            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-	            	
-	                CorsConfiguration configuration = new CorsConfiguration();
-	                
-	                configuration.setAllowedOrigins(Collections.singletonList("https://js1.jsflux.co.kr")); // 허용된 오리진 설정
-	                configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
-	                configuration.setAllowCredentials(true); // 자격증명 허용 설정
-	                configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
-	                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
-			configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
-			configuration.addExposedHeader("Authorization");
-			configuration.addExposedHeader("set-cookie");
-				
-			        
-	                return configuration;
-	            }
-	        })));
-	    	http
-	                .csrf((auth) -> auth.disable());
-	    
-	        http
-	                .formLogin((auth) -> auth.disable());
-
-	        http
-	                .httpBasic((auth) -> auth.disable());
-
-	        http
-	                .authorizeHttpRequests((auth) -> auth
-	                        .requestMatchers("/**").permitAll()
-	                        .requestMatchers("/admin").hasRole("ADMIN")
-	                        .anyRequest().authenticated());
-	        http
-	                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
-	        http
-	                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
-	        http
-	        	.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
-	        http
-	                .sessionManagement((session) -> session
-	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	
-	             	        
-	        return http.build();
+	      http
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Collections.singletonList(allowedOrigin)); // 환경 변수로 주입된 오리진 설정
+                configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
+                configuration.setAllowCredentials(true); // 자격증명 허용 설정
+                configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
+                configuration.addExposedHeader("Authorization"); // 노출할 헤더 설정
+                configuration.addExposedHeader("Set-Cookie");
+                return configuration;
+            }))
+            .csrf(csrf -> csrf.disable()) // 세션을 쓰지않아서 disable
+            .formLogin(form -> form.disable()) // json 로그인 -> form 로그인 disable
+            .httpBasic(httpBasic -> httpBasic.disable()) // http 기본 인증 disable -> JWT 인증 사용할거기 때문에
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/**").permitAll()
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().authenticated())
+            .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class) 
+            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+	
+        return http.build();
 	    }
     
 
