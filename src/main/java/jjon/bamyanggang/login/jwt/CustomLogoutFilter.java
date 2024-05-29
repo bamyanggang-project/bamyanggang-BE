@@ -40,13 +40,15 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		filterChain.doFilter(requset, response);	
 		return;
 	}
+	// 로그아웃 uri 확인인
 	String requestMetgod = requset.getMethod();
 	if(!requestMetgod.equals("POST")) {
 		
 		filterChain.doFilter(requset, response);
 		return;
 	}
-	
+	// 메서드 post 인지 확인 
+		
 	//get refresh token
 	String refresh = null;
 	Cookie[] cookies = requset.getCookies();
