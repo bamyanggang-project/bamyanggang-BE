@@ -22,6 +22,8 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
 
+	// 클라이언트 로그인시 id , password 확인하는 로직
+	
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	private final RefreshRepository refreshRepository;
@@ -73,6 +75,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
 		}
+		// 로그인 성공시 클라이언트쪽에 access 토큰 refresh 토큰 건냄.
 		@Override
 		protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse reponse,  AuthenticationException failed )
 		{	
@@ -89,13 +92,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			refreshEntity.setExpiration(date.toString());	
 			refreshRepository.save(refreshEntity);
 		}
-		private Cookie createCookie(String key, String value ) { // 수정
+	
+		private Cookie createCookie(String key, String value ) { // 쿠키설정
 			Cookie cookie = new Cookie(key, value);
 		    cookie.setMaxAge(24*60*60);
-		    cookie.setSecure(true);
+		    cookie.setSecure(true); // SameStie None 일시 설정 필수.
 		    cookie.setPath("/");
-		    cookie.setAttribute("SameSite", "None");
-		    cookie.setHttpOnly(true);
+		    cookie.setAttribute("SameSite", "None"); // 쿠키는 모든 종류 교차사이트의 요청에서 전송됩니다. 
+		    cookie.setHttpOnly(true); // HttpOnly 쿠키 사용위한 설정.
 		   		    
 		    return cookie;
 		}	
