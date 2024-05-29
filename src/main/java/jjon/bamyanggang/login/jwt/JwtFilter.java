@@ -13,15 +13,17 @@
 	import jakarta.servlet.http.HttpServletResponse;
 	import jjon.bamyanggang.login.dto.CustomUserDetails;
 	import jjon.bamyanggang.login.entity.UserEntity;
-	
+
+
 	public class JwtFilter extends OncePerRequestFilter {
+		// JWT 발급.
+		// 시큐리티 OncePerRequestFilter extends 해서 doFilterInternal 커스텀
 		
-		private final JwtUtil jwtUtil;
-		
+		private final JwtUtil jwtUtil;		
 		public JwtFilter(JwtUtil jwtUtil) {
 			this.jwtUtil = jwtUtil;
 		}
-	
+		
 		@Override
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 				throws ServletException, IOException {
@@ -37,6 +39,7 @@
 				filterChain.doFilter(request, response);
 				return;
 			}
+					
 			UserEntity userEntity = new UserEntity();
 			CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);		
 			Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails,  null, customUserDetails.getAuthorities());
