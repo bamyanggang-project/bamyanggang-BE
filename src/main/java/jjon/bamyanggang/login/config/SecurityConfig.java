@@ -26,6 +26,9 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 
 @Configuration
 @EnableWebSecurity
+
+//SecurityConfig 클래스는 Spring Security의 설정을 정의하는 클래스입니다.
+//이 클래스는 인증 구성(AuthenticationConfiguration), JWT 유틸리티(JwtUtil), 그리고 RefreshRepository를 주입받아 사용합니다.
 public class SecurityConfig {
 
 	 private final AuthenticationConfiguration authenticationConfiguration;
@@ -53,17 +56,11 @@ public class SecurityConfig {
 	    @Bean
 	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
-	        return new BCryptPasswordEncoder();
+	        return new BCryptPasswordEncoder();  
 	    }
 	    
-	    
-	   
 
-
-
-
-	   
-
+	    // SecurityFilterChain을 구성하는 메서드입니다. CORS 설정을 정의합니다.
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    	http
@@ -79,10 +76,9 @@ public class SecurityConfig {
 	                configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
 	                configuration.setMaxAge(3600L); // 사전 검사 결과 캐시 유지 시간 설정 (3600초 -> 1시간)
 					configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
-					configuration.addExposedHeader("Authorization");
-					configuration.addExposedHeader("set-cookie");
+					configuration.addExposedHeader("Authorization"); // Authorization 헤더 노출
+					configuration.addExposedHeader("set-cookie");  // set-cookie 헤더 노출
 				
-			        
 	                return configuration;
 	            }
 	        })));
@@ -103,22 +99,23 @@ public class SecurityConfig {
 	        http
 	                .authorizeHttpRequests((auth) -> auth
 	                        .requestMatchers("/**").permitAll()
-	                        .requestMatchers("/admin").hasRole("ADMIN")
-	                        .anyRequest().authenticated());
-	        				
+	                        .requestMatchers("/admin").hasRole("ADMIN") // admin 요청은 ADMIN 역할이 있어야 허용
+	                        .anyRequest().authenticated()); // 그 외 요청은 모두 허용
+	        				                                                                                                       
 
 	        http
-	                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+	                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class); 
+	        // JwtFilter를 UsernamePasswordAuthenticationFilter 전에 추가
 	        http
 	                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
+	        // LoginFilter를 UsernamePasswordAuthenticationFilter 전에 추가
 	        http
 	        .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
-	        
+	        // CustomLogoutFilter를 LogoutFilter 전에 추가
 	        
 	        http
 	                .sessionManagement((session) -> session
-	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	
-	        
+	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	// 세션 관리 설정: 상태가 없는 세션을 사용하도록 설정합니다. 
 	        
 	        
 	        return http.build();

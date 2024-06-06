@@ -59,11 +59,11 @@ public class MemberService {
     }
 	public boolean addMember(MemberDto memberDto) {
 		
-		
 			 if (isIdAvailable(memberDto.getUserId()) > 0 ||
 			            isEmailAvailable(memberDto.getEmailNum1()) > 0 ||
 			            isNickNameAvailable(memberDto.getNickName()) > 0 ||
-			            isPhoneNumAvailable(memberDto.getPhoneNum1(), memberDto.getPhoneNum2(), memberDto.getPhoneNum3()) > 0
+			            isPhoneNumAvailable(memberDto.getPhoneNum1(), 
+			            memberDto.getPhoneNum2(), memberDto.getPhoneNum3()) > 0
 			            
 					 ) {
 			            return false;

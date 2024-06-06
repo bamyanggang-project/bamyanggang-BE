@@ -23,12 +23,6 @@ public class LoginController {
 	}
 
 	
-	@PostMapping("/")
-    public String login() {
-		
-		
-        return "로그인 되었습니다.";
-    }
 
 	
 	@DeleteMapping("/delete/{userId}")

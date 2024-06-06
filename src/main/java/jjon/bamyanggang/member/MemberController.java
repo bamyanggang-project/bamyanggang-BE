@@ -74,7 +74,7 @@ public class MemberController {
 	  
 		  
 		  @DeleteMapping("/api/deletemember")
-		  public ResponseEntity<String> deleteDelete(@RequestBody MemberDto memberDto) {
+		  public ResponseEntity<String> deleteMember(@RequestBody MemberDto memberDto) {
 			  
 			  boolean succes = memberService.deleteMember(memberDto);
 			  if(succes) {
@@ -88,7 +88,6 @@ public class MemberController {
 			    public MemberDto getUserByUserId(@PathVariable("userId") String userId) {
 			      MemberDto memberDto =  memberService.getUserByUserId(userId);
 			      
-			      System.out.println(memberDto);
 			      return  memberDto;
 			      
 			    }

@@ -23,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jjon.bamyanggang.login.entity.RefreshEntity;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
+
+//로그인을 처리하는 필터 클래스
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
 
 	private final AuthenticationManager authenticationManager;
@@ -37,12 +39,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
-		setFilterProcessesUrl("/api/login");
-		// 배포를 위한 api 로 url 변경
+		setFilterProcessesUrl("/api/login"); // 로그인 URL 설정
+		
 		
 		
 	}
-	
+	// 실제 로그인 시도를 처리하는 메서드
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		
@@ -53,12 +55,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		        String username = jsonNode.get("userId").textValue();
 		        String password = jsonNode.get("userPw").textValue();
 		        
-		        System.out.println(username + " + " + password);
 
-		        // 스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야함 
+		        // 스프링 시큐리티에서 username과 password를 검증하기 위한 UsernamePasswordAuthenticationToken 생성
 		        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
-		        System.out.println(authToken);
-		        // token에 담은 검증을 위한 AuthenticationManager로 전달
+		        // 생성된 토큰을 AuthenticationManager로 전달하여 인증 시도
 		        return authenticationManager.authenticate(authToken);
 		        // authenticationManager.authenticate 로 리턴하여 검증 (username , passowrd 같은지 -> 패스워드는 BCrypt 알고리즘 해싱으로 비교하여검증)
 		       
@@ -69,11 +69,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 		// 로그인 성공시 싱행하는 메소드(여기서 JWT 를 발급하면됨)
 		@Override
-		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication )
+		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response,
+				FilterChain chain, Authentication authentication )
 		{
 		    //유저 정보
 		    String username = authentication.getName();
-		    System.out.println(username);
 		    
 		    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		    Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -92,8 +92,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
 		    
-			System.out.println("토큰 발급 성공 access : " + access + " refresh : " + refresh);
 		}
+		
+		 // 로그인 실패 시 실행되는 메서드
 		@Override
 		protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse reponse,  AuthenticationException failed )
 		{	
@@ -101,6 +102,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			// 로그인 실패시 에러.
 		}
 		
+		 // 리프레시 토큰 엔티티를 추가하는 메서드
 		private void addRefreshEntity(String username, String refresh, Long expiredMs) {
 			
 			
@@ -114,13 +116,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			refreshRepository.save(refreshEntity);
 		}
 		
-		private Cookie createCookie(String key, String value ) { // 수정
+		// 쿠키 생성 메서드
+		private Cookie createCookie(String key, String value ) { 
 			Cookie cookie = new Cookie(key, value);
-		    cookie.setMaxAge(24*60*60);
-		    cookie.setSecure(true);
-		    cookie.setPath("/");
-		    cookie.setAttribute("SameSite", "None");
-		    cookie.setHttpOnly(true);
+		    cookie.setMaxAge(24*60*60); // 쿠키의 유효 시간 설정 (24시간)
+		    cookie.setSecure(true); //보안 설정 (HTTPS 연결에서만 전송)
+		    cookie.setPath("/"); // 쿠키의 유효 경로 설정 (전체 경로에 대해 유효)
+		    cookie.setAttribute("SameSite", "None"); // SameSite 속성 설정 (Cross-Site 요청 방지)
+		    cookie.setHttpOnly(true); // JavaScript로 쿠키에 접근 불가능하게 설정
 		   
 		    
 		    return cookie;

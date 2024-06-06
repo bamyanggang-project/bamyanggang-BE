@@ -9,23 +9,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jjon.bamyanggang.login.entity.UserEntity;
 
 public class CustomUserDetails  implements UserDetails {
-
-    private final UserEntity userEntity;
+// CustomUserDetails 클래스는 UserDetails 인터페이스를 구현하여 사용자의 인증 및 권한 부여를 처리합니다.
+    
+	private final UserEntity userEntity;
 
     public CustomUserDetails(UserEntity userEntity) {
 
         this.userEntity = userEntity;
     }
 
-
+    // 사용자의 권한을 반환하는 메서드
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
+    	
+    	// UserEntity 객체에서 권한을 추출하여 GrantedAuthority 객체로 변환하여 반환합니다.
         Collection<GrantedAuthority> collection = new ArrayList<>();
-
         collection.add(new GrantedAuthority() {
-
-            @Override
+        
+            @Override	
             public String getAuthority() {
 
                 return userEntity.getRole();

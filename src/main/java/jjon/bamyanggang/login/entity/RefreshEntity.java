@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RefreshEntity {
-
+// refresh 토큰 Entitiy
 	
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
