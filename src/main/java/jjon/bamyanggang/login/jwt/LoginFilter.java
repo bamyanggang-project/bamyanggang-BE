@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jjon.bamyanggang.login.entity.RefreshEntity;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
+
+//로그인을 처리하는 필터 클래스
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
 
 	// 클라이언트 로그인시 id , password 확인하는 로직
@@ -33,10 +35,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
-		setFilterProcessesUrl("/api/login");
-		// api 로 url 변경
-	}
+		setFilterProcessesUrl("/api/login"); // 로그인 URL 설정
 	
+	}
+	// 실제 로그인 시도를 처리하는 메서드
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		
@@ -47,7 +49,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		        String username = jsonNode.get("userId").textValue();
 		        String password = jsonNode.get("userPw").textValue();
 		        
+
+
+		        // 스프링 시큐리티에서 username과 password를 검증하기 위한 UsernamePasswordAuthenticationToken 생성
 		        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+		        // 생성된 토큰을 AuthenticationManager로 전달하여 인증 시도
+
 		        return authenticationManager.authenticate(authToken);
 		       
 		    } catch (IOException e) {
@@ -56,10 +63,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	}
 	
 		@Override
-		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication )
-		{ 
+		protected void successfulAuthentication( HttpServletRequest request, HttpServletResponse response,
+				FilterChain chain, Authentication authentication )
+		{
+		    //유저 정보
+
 		    String username = authentication.getName();
-		    System.out.println(username);
 		    
 		    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		    Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -74,8 +83,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    response.addCookie(createCookie("refresh", refresh) ); // 수정
 		    response.addHeader("refresh", access);
 		    response.setStatus(HttpStatus.OK.value());
+		    
+
 		}
-		// 로그인 성공시 클라이언트쪽에 access 토큰 refresh 토큰 건냄.
+
+		
+		 // 로그인 실패 시 실행되는 메서드
 		@Override
 		protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse reponse,  AuthenticationException failed )
 		{	
@@ -83,6 +96,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			// 로그인 실패시 에러.
 		}
 		
+		 // 리프레시 토큰 엔티티를 추가하는 메서드
 		private void addRefreshEntity(String username, String refresh, Long expiredMs) {
 		
 			Date date = new Date(System.currentTimeMillis() + expiredMs);		
@@ -92,15 +106,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			refreshEntity.setExpiration(date.toString());	
 			refreshRepository.save(refreshEntity);
 		}
-	
-		private Cookie createCookie(String key, String value ) { // 쿠키설정
+		
+		// 쿠키 생성 메서드
+		private Cookie createCookie(String key, String value ) { 
 			Cookie cookie = new Cookie(key, value);
-		    cookie.setMaxAge(24*60*60);
-		    cookie.setSecure(true); // SameStie None 일시 설정 필수.
-		    cookie.setPath("/");
-		    cookie.setAttribute("SameSite", "None"); // 쿠키는 모든 종류 교차사이트의 요청에서 전송됩니다. 
-		    cookie.setHttpOnly(true); // HttpOnly 쿠키 사용위한 설정.
-		   		    
+		    cookie.setMaxAge(24*60*60); // 쿠키의 유효 시간 설정 (24시간)
+		    cookie.setSecure(true); //보안 설정 (HTTPS 연결에서만 전송)
+		    cookie.setPath("/"); // 쿠키의 유효 경로 설정 (전체 경로에 대해 유효)
+		    cookie.setAttribute("SameSite", "None"); // SameSite 속성 설정 (Cross-Site 요청 방지)
+		    cookie.setHttpOnly(true); // JavaScript로 쿠키에 접근 불가능하게 설정
+
 		    return cookie;
 		}	
 }

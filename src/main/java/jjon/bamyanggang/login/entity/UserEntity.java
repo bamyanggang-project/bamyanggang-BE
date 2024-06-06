@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "member")
 public class UserEntity {
-	
+// 로그인을 위한 Entity
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	

@@ -22,7 +22,8 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
 	}
-
+	
+	// doFilter 메서드 오버라이드
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -30,10 +31,12 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 	
+	
+	// 실제 필터링 작업을 처리하는 메서드
 	private void doFilter(HttpServletRequest requset, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 	
-	//path and method verify
-		
+	
+	// 요청 경로와 메서드를 검증하여 로그아웃 요청인지 확인	
 	String requsetUri = requset.getRequestURI();
 	if(!requsetUri.matches("^\\/api\\/logout$")) {
 		
@@ -79,6 +82,9 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		return;
 	}
 	
+	// 토큰이 refresh 인지 확인
+	
+
 	String category = jwtUtil.getCategory(refresh);
 	if(!category.equals("refresh") ) {
 		

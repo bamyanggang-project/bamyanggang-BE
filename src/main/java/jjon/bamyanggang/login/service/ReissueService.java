@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,8 @@ import jjon.bamyanggang.login.jwt.JwtUtil;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
 @Service
+
+// JWT를 재발급하는 서비스 클래스입니다.
 public class ReissueService {
 
 	private final JwtUtil jwtUtil;
@@ -28,13 +29,16 @@ public class ReissueService {
     }
 
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-        // get refresh token
+    	
+    	// HTTP 요청에서 헤더의 이름을 모두 가져와서 확인하는 메서드입니다.
     	Enumeration<String> headerNames = request.getHeaderNames();
     	while (headerNames.hasMoreElements()) {
     	    String headerName = headerNames.nextElement();
     	    String headerValue = request.getHeader(headerName);
     	    System.out.println(headerName + ": " + headerValue);
     	}
+    	
+    	// 요청에서 쿠키를 추출하여 refresh 토큰을 가져오는 부분입니다.
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         
@@ -46,7 +50,7 @@ public class ReissueService {
                
             }
         }
-
+        // refresh 토큰이 존재하지 않으면 400 에러를 반환합니다.
         if (refresh == null) {
             // response status code
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
@@ -71,19 +75,21 @@ public class ReissueService {
             // response body
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
-
+        // 새로운 access와 refresh 토큰을 생성하여 응답 헤더에 설정하고, 쿠키에 새로운 refresh 토큰을 저장하는 부분입니다.
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
 
-        // make new JWT
+        // response 헤더에 새로운 access 토큰과 authorization 정보를 설정하고, 쿠키에 새로운 refresh 토큰을 저장하여 응답합니다.
         String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
         
         refreshRepository.deleteByRefresh(refresh);
         addRefreshEntity(username, refresh, 86400000L);
         
+        // HTTP 응답에 access 헤더와 Authorization 헤더를 설정합니다.
         response.setHeader("access", newAccess);
-        response.addHeader("Authorization", newRefresh);     	
+        response.addHeader("Authorization", newRefresh);
+        // HTTP 응답에 refresh 토큰을 쿠키로 설정합니다.
         response.addCookie(createCookie("refresh", newRefresh));
         
         return new ResponseEntity<>(HttpStatus.OK);
@@ -102,7 +108,7 @@ public class ReissueService {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24 * 60 * 60);
 	    cookie.setSecure(true);
-	    //cookie.setPath("/");
+	    cookie.setPath("/");
 	    cookie.setAttribute("SameSite", "None");
 	    cookie.setHttpOnly(true);
 	    

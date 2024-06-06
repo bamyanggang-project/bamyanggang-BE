@@ -64,6 +64,7 @@ public class MemberService {
         memberMapper.addMember(memberDto);
         return true;
     }
+
 	
 	// 비밀번호 bCrypt 로 다시 한번 인코딩	
     public MemberDto getUserByUserId(String userId) {

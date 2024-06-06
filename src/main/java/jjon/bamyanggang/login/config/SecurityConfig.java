@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,6 +25,9 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 
 @Configuration
 @EnableWebSecurity
+
+//SecurityConfig 클래스는 Spring Security의 설정을 정의하는 클래스입니다.
+//이 클래스는 인증 구성(AuthenticationConfiguration), JWT 유틸리티(JwtUtil), 그리고 RefreshRepository를 주입받아 사용합니다.
 public class SecurityConfig {
 // 시큐리티 인증설정 클래스
 	 private final AuthenticationConfiguration authenticationConfiguration;
@@ -47,10 +49,16 @@ public class SecurityConfig {
 	    }
 	    @Bean
 	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-	        return new BCryptPasswordEncoder();
-	    }	    
+
+	        return new BCryptPasswordEncoder();  
+	    }
+	    
+
+	    // SecurityFilterChain을 구성하는 메서드입니다. CORS 설정을 정의합니다.
+
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 	      http
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
@@ -77,6 +85,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	
         return http.build();
+
 	    }
     
 
