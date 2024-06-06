@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,10 +32,7 @@ public class SecurityConfig {
 
 	 private final AuthenticationConfiguration authenticationConfiguration;
 	    private final JwtUtil jwtUtil;
-	    private final RefreshRepository refreshRepository;
-	    
-
-
+	    private final RefreshRepository refreshRepository;	    
 	    
 	    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JwtUtil jwtUtil, RefreshRepository refreshRepository 
 	    		) {
@@ -49,10 +45,8 @@ public class SecurityConfig {
 
 	    @Bean
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
 	        return configuration.getAuthenticationManager();
 	    }
-
 	    @Bean
 	    public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
@@ -61,6 +55,7 @@ public class SecurityConfig {
 	    
 
 	    // SecurityFilterChain을 구성하는 메서드입니다. CORS 설정을 정의합니다.
+
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    	http
@@ -78,30 +73,27 @@ public class SecurityConfig {
 					configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정 
 					configuration.addExposedHeader("Authorization"); // Authorization 헤더 노출
 					configuration.addExposedHeader("set-cookie");  // set-cookie 헤더 노출
+
 				
 	                return configuration;
 	            }
 	        })));
-
-	
 	    	http
 	                .csrf((auth) -> auth.disable());
-
 	    
 	        http
 	                .formLogin((auth) -> auth.disable());
 
-
 	        http
 	                .httpBasic((auth) -> auth.disable());
 
-	 
 	        http
 	                .authorizeHttpRequests((auth) -> auth
 	                        .requestMatchers("/**").permitAll()
 	                        .requestMatchers("/admin").hasRole("ADMIN") // admin 요청은 ADMIN 역할이 있어야 허용
 	                        .anyRequest().authenticated()); // 그 외 요청은 모두 허용
 	        				                                                                                                       
+
 
 	        http
 	                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class); 
@@ -118,6 +110,7 @@ public class SecurityConfig {
 	                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));	// 세션 관리 설정: 상태가 없는 세션을 사용하도록 설정합니다. 
 	        
 	        
+
 	        return http.build();
 	    }
     

@@ -11,12 +11,9 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
-	
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
-	
 	public void deleteByUsername(String username ) {
 		
 		UserEntity user = userRepository.findByUsername(username);
@@ -27,11 +24,6 @@ public class UserService {
 			
 		} else {
 			throw new RuntimeException("비밀번호가 틀렸습니다");
-		}
-		
+		}	
 	}
-	
-	
-	
-	
 }

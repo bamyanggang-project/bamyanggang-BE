@@ -14,11 +14,11 @@ public class CustomUserDetails  implements UserDetails {
 	private final UserEntity userEntity;
 
     public CustomUserDetails(UserEntity userEntity) {
-
         this.userEntity = userEntity;
     }
 
     // 사용자의 권한을 반환하는 메서드
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
     	
@@ -27,6 +27,7 @@ public class CustomUserDetails  implements UserDetails {
         collection.add(new GrantedAuthority() {
         
             @Override	
+
             public String getAuthority() {
 
                 return userEntity.getRole();

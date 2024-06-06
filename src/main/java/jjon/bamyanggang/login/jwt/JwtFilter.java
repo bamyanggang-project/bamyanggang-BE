@@ -32,10 +32,8 @@
 		@Override
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 				throws ServletException, IOException {
-			//request에서 atuhorization 헤더를 찾음
 			String authorization = request.getHeader("Authorization");
 			
-			// Authorizaon 헤더 검증
 			if (authorization == null || !authorization.startsWith("Bearer " )) {
 				// 토큰이 존재하지 않거나 Bearer 토큰이 아닌 경우
 				System.out.println("token null");
@@ -46,8 +44,6 @@
 				
 			}
 			
-			System.out.println("authorizaion now");
-			// Bearer 부분 제거 후 순수 토큰만 흭득
 			String token = authorization.split(" ")[1];
 			// 토큰 소멸시간 검증 
 			if (jwtUtil.isExpired(token)) {
@@ -62,7 +58,6 @@
 			
 			// 토큰에서 사용자 정보 추출
 			UserEntity userEntity = new UserEntity();
-		
 			// 사용자 정보를 기반으로 UserDetails 객체 생성
 			CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 			 // Authentication 객체 생성
@@ -71,6 +66,4 @@
 			SecurityContextHolder.getContext().setAuthentication(authToken);
 			filterChain.doFilter(request, response); // 다음 필터로 요청 전달
 		}
-		
-	
 	}
