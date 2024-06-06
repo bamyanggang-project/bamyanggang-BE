@@ -1,9 +1,7 @@
 package jjon.bamyanggang.login.jwt;
 
 import java.io.IOException;
-
 import org.springframework.web.filter.GenericFilterBean;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jjon.bamyanggang.login.repository.RefreshRepository;
 
 public class CustomLogoutFilter extends GenericFilterBean {
-	
 	
 	private final JwtUtil jwtUtil;
 	private final RefreshRepository refreshRepository;
@@ -46,13 +43,15 @@ public class CustomLogoutFilter extends GenericFilterBean {
 		filterChain.doFilter(requset, response);	
 		return;
 	}
+	// 로그아웃 uri 확인인
 	String requestMetgod = requset.getMethod();
 	if(!requestMetgod.equals("POST")) {
 		
 		filterChain.doFilter(requset, response);
 		return;
 	}
-	
+	// 메서드 post 인지 확인 
+		
 	//get refresh token
 	String refresh = null;
 	Cookie[] cookies = requset.getCookies();

@@ -13,13 +13,14 @@
 	import jakarta.servlet.http.HttpServletResponse;
 	import jjon.bamyanggang.login.dto.CustomUserDetails;
 	import jjon.bamyanggang.login.entity.UserEntity;
-	
+
 	
 	// JWT 토큰을 처리하여 JWT 검증을 수행하는 필터 클래스
 	public class JwtFilter extends OncePerRequestFilter {
+		// JWT 발급.
+		// 시큐리티 OncePerRequestFilter extends 해서 doFilterInternal 커스텀
 		
-		private final JwtUtil jwtUtil;
-		
+		private final JwtUtil jwtUtil;		
 		public JwtFilter(JwtUtil jwtUtil) {
 			this.jwtUtil = jwtUtil;
 		}
@@ -29,6 +30,7 @@
 		 * OncePerRequestFilter 상속받아 dofilterInternal 메서드를 오버라이딩하여
 		   JWT로 커스텀 진행
 		 */
+
 		@Override
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 				throws ServletException, IOException {
@@ -52,6 +54,7 @@
 				
 				return;
 			}
+
 			
 			
 	

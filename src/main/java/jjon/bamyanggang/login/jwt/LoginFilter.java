@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,10 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +24,8 @@ import jjon.bamyanggang.login.repository.RefreshRepository;
 //로그인을 처리하는 필터 클래스
 public class LoginFilter extends UsernamePasswordAuthenticationFilter { 
 
+	// 클라이언트 로그인시 id , password 확인하는 로직
+	
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	private final RefreshRepository refreshRepository;
@@ -37,9 +36,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		this.jwtUtil = jwtUtil;
 		this.refreshRepository = refreshRepository;
 		setFilterProcessesUrl("/api/login"); // 로그인 URL 설정
-		
-		
-
+	
 	}
 	// 실제 로그인 시도를 처리하는 메서드
 	@Override
@@ -89,6 +86,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    
 
 		}
+
 		
 		 // 로그인 실패 시 실행되는 메서드
 		@Override
@@ -117,8 +115,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    cookie.setPath("/"); // 쿠키의 유효 경로 설정 (전체 경로에 대해 유효)
 		    cookie.setAttribute("SameSite", "None"); // SameSite 속성 설정 (Cross-Site 요청 방지)
 		    cookie.setHttpOnly(true); // JavaScript로 쿠키에 접근 불가능하게 설정
-		   
-		    
 
 		    return cookie;
 		}	
