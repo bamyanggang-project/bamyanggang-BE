@@ -42,7 +42,6 @@ public class ReissueService {
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         
-        
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("refresh")) {
       
@@ -91,7 +90,6 @@ public class ReissueService {
         response.addHeader("Authorization", newRefresh);
         // HTTP 응답에 refresh 토큰을 쿠키로 설정합니다.
         response.addCookie(createCookie("refresh", newRefresh));
-        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -111,6 +109,10 @@ public class ReissueService {
 	    cookie.setPath("/");
 	    cookie.setAttribute("SameSite", "None");
 	    cookie.setHttpOnly(true);
+	    /*
+	     * httponly 쿠키를 사용시 SameSite를  None 으로 두고 Secure를 true로 하여 사용해야한다.
+	     * 
+	     */
 	    
 	    return cookie;
     }
